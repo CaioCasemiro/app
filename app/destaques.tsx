@@ -2,7 +2,6 @@
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
-// estilos do Swiper (necessários para que as setas e layout apareçam)
 import 'swiper/css';
 import 'swiper/css/navigation';
 

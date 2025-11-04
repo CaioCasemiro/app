@@ -8,7 +8,7 @@ import Bombons from './listas/bombons';
 import CopoDaFelicidade from './listas/copoDaFelicidade';
 import Escondidinho from './listas/escondidinho';
 import Fatias from './listas/fatias';
-import { useHorario } from './hooks/useHorario';
+import { useHorario } from '../hooks/useHorario';
 
 export default function Home() {
   
