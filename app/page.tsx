@@ -1,65 +1,149 @@
-import Image from "next/image";
+"use client";
+
+import Categorias from './categorias';
+import Destaques from './destaques';
+import BolosNoPote from './listas/bolosNoPote';
+import BoloVulcao from './listas/boloVulcao';
+import Bombons from './listas/bombons';
+import CopoDaFelicidade from './listas/copoDaFelicidade';
+import Escondidinho from './listas/escondidinho';
+import Fatias from './listas/fatias';
+import { useHorario } from './hooks/useHorario';
 
 export default function Home() {
+  
+  const {textoBarra, corBarra} = useHorario()
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      <div className='fixed top-0 left-0 w-full z-50 md:static md:z-auto'>
+        <header className='shadow-md md:shadow-none md:bg-transparent'>
+          <div className="flex items-center gap-2">
+            <a href="/">
+              <img className="w-24 h-20 " src="/logo.png" alt="logo adocicada" />
+            </a>
+            <h1 className="ml-15 text-xl font-[raleway] font-bold hidden md:block">Adocicada doceria</h1>
+          </div>
+          <div className="flex items-center gap-15 md:mr-5">
+            <a className="hover:underline font-[inter] hidden md:inline" href="/contatos">Contatos</a>
+            <a href="/">
+              <img className="w-10 h-11 block md:hidden" src="/saco.png" alt="sacola de pedidos" />
+            </a>
+          </div>
+        </header>
+        <div className={`w-full ${corBarra} h-6 flex justify-center items-center`}>
+          <p className="text-base text-white font-bold">{textoBarra}</p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+      </div>
+
+
+      <main className="mt-40 md:mt-10">
+
+        <section className='px-4 md:px-1 mx-auto'>
+          <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-8'>Destaques do dia</h3>
+          <Destaques />
+        </section>
+
+        <section className='px-4 md:px-1 mx-auto'>
+          <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold'>Categorias</h3>
+          <Categorias />
+        </section>
+
+        <section id="bolosNoPote" className='px-4 md:px-1 mx-auto mb-10'>
+          <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Bolos no pote</h3>
+          <BolosNoPote />
+        </section>
+
+        <section id="copoDaFelicidade" className='px-4 md:px-1 mx-auto mb-10'>
+          <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Copos da felicidade</h3>
+          <CopoDaFelicidade />
+        </section>
+
+        <section id="boloVulcao" className='px-4 md:px-1 mx-auto mb-10'>
+          <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Bolos vulcão</h3>
+          <BoloVulcao />
+        </section>
+
+        <section id="escondidinhoDeBrownie" className='px-4 md:px-1 mx-auto mb-10'>
+          <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Escondidinhos de brownie</h3>
+          <Escondidinho />
+        </section>
+
+        <section id="bomBons" className='px-4 md:px-1 mx-auto mb-10'>
+          <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Bombons</h3>
+          <Bombons />
+        </section>
+
+        <section id="fatiasDeBolo" className='px-4 md:px-1 mx-auto mb-10'>
+          <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Fatias de bolo</h3>
+          <Fatias />
+        </section>
+
       </main>
-    </div>
+
+      <footer className="mt-25 py-10 text-[#3e2723] bg-[#E8CCAC] font-[quicksand]">
+        <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-3 gap-8">
+
+          <div className="flex flex-col items-center justify-center sm:items-start text-center sm:text-left space-y-3">
+            <img src="/logo.png" alt="Logo Adocicada" className="w-28 h-auto mx-auto" />
+            <p className="font-[raleway] text-sm leading-relaxed max-w-[220px] mx-auto mt-2">
+              Adoce seu dia com nossos bolos e doces artesanais 💕
+            </p>
+          </div>
+
+          <div className="flex flex-col items-center sm:items-center text-center space-y-3">
+            <h3 className="font-[raleway] font-semibold">Entre em contato</h3>
+
+            <div className="flex flex-col items-center sm:items-start space-y-2 mt-2">
+              <a
+                href="https://api.whatsapp.com/send/?phone=%2B5589994282685&text&type=phone_number&app_absent=0"
+                target="_blank"
+                className="flex items-center gap-2 hover:underline hover:opacity-80 transition"
+              >
+                <img src="/whatsapp.png" alt="WhatsApp logo" className="w-6 h-6" />
+                <p>Nosso WhatsApp</p>
+              </a>
+
+              <a
+                href="https://www.instagram.com/_adocicadadoceria"
+                target="_blank"
+                className="flex items-center gap-2 hover:underline hover:opacity-80 transition mt-1.5"
+              >
+                <img src="/instagram.png" alt="Instagram logo" className="w-6 h-6" />
+                <p>@_adocicadadoceria</p>
+              </a>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center sm:items-end text-center sm:text-right space-y-3">
+            <h3 className="font-[raleway] font-semibold">Desenvolvido por</h3>
+
+            <div className="flex flex-col items-center sm:items-end space-y-1 mt-2">
+              <a
+                href="https://www.instagram.com/caiocasemiro__"
+                target="_blank"
+                className="hover:underline hover:opacity-80 transition"
+              >
+                @caiocasemiro__
+              </a>
+
+              <a
+                href="mailto:casemirocaio2@gmail.com"
+                className="text-sm hover:underline mt-3"
+              >
+                casemirocaio2@gmail.com
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t border-[#d1b89b] mt-8 pt-4 text-center text-sm">
+          © {new Date().getFullYear()} Adocicada Doceria — Todos os direitos reservados.
+        </div>
+      </footer>
+
+
+
+    </>
   );
 }

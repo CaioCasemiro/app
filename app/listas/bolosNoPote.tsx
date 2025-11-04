@@ -1,0 +1,35 @@
+"use client";
+
+export default function BolosNoPote() {
+
+    const bolosNoPote = [
+        { id: 1, nome: "Chocolate", preco: "R$ 10,00", img: "/boloChocolate10.jpeg" },
+        { id: 2, nome: "Ninho com nutella", preco: "R$ 10,00", img: "/ninhoComNutella10.jpeg" },
+        { id: 3, nome: "Ninho com morango", preco: "R$ 10,00", img: "/ninhoComMorango10.jpeg" },
+        { id: 4, nome: "Ninho com chocolate", preco: "R$ 10,00", img: "/ninhoComChocolate10.jpeg" },
+        { id: 5, nome: "Red Velvet", preco: "R$ 10,00", img: "/redVelvet10.jpeg" },
+    ]
+
+    return (
+        <>
+        
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {bolosNoPote.map((bolo) => (
+                    <div
+                        key={bolo.id}
+                        className="flex items-center bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-transform duration-300 hover:scale-[1.03] hover:bg-[#cfcfcfab]">
+
+                        <img src={bolo.img} alt={bolo.nome} className='w-45 h-32 object-cover rounded-l-xl' />
+
+                        <div className="flex flex-col justify-center px-4 py-2 w-full">
+                            <p className='font-semibold font-[quicksand] text-[#3e2723]  text-lg'>{bolo.nome}</p>
+
+                            <p className='text-green-700 font-bold text-base mt-1'>{bolo.preco}</p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+        </>
+    )
+}
