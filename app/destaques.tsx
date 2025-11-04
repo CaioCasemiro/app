@@ -31,7 +31,7 @@ export default function Destaques() {
                     {produtos.map((produto) => (
                         <SwiperSlide
                             key={produto.id}
-                            className="bg-white rounded-lg shadow-md p-3.5 w-48 flex flex-col items-center justify-center text-center mb-10 hover:bg-[#cfcfcfab] transition-transform hover:scale-[1.02]"
+                            className="bg-white rounded-lg shadow-md p-3.5 w-48 flex flex-col items-center justify-center text-center mb-10 hover:bg-[#cfcfcfab] cursor-pointer transition-transform hover:scale-[1.02]"
                         >
                             <img src={produto.img}
                                 alt={produto.nome}
@@ -47,7 +47,7 @@ export default function Destaques() {
                 {produtos.map((produto) => (
                     <div
                         key={produto.id}
-                        className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center w-[200px] mb-10 hover:bg-[#cfcfcfab] transition-transform hover:scale-[1.03]"
+                        className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center w-[200px] mb-10 hover:bg-[#cfcfcfab] transition-transform cursor-pointer hover:scale-[1.03]"
                     >
                         <img
                             src={produto.img}

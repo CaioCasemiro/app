@@ -1,20 +1,31 @@
 "use client";
+import { useState } from "react";
+import ModalProduto from "../components/modalProduto";
 
-export default function Escondidinho(){
+export default function Escondidinho() {
 
     const escondidinhos = [
-        { id: 1, nome: "Chocolate", preco: "R$ 12,00", img: "/escondidinhoChocolate12.jpeg" },
-        { id: 2, nome: "Ninho com nutella", preco: "R$ 12,00", img: "/escondidinhoNinhoNutella12.jpeg" },
+        { id: 1, nome: "Chocolate", preco: "R$ 12,00", img: "/escondidinhoChocolate12.jpeg", quantidadeDisponivel: 10 },
+        { id: 2, nome: "Ninho com nutella", preco: "R$ 12,00", img: "/escondidinhoNinhoNutella12.jpeg", quantidadeDisponivel: 10 },
     ]
 
-    return(
+    const [escondidinhoSelecionado, setEscondidinhoSelecionado] = useState<{
+        id: number;
+        nome: string;
+        preco: string;
+        img: string;
+        quantidadeDisponivel: number;
+    } | null>(null)
+
+    return (
         <>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {escondidinhos.map((escondidinho) => (
                     <div
                         key={escondidinho.id}
-                        className="flex items-center bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-transform duration-300 hover:scale-[1.03] hover:bg-[#cfcfcfab]">
+                        onClick={()=>setEscondidinhoSelecionado(escondidinho)}
+                        className="flex items-center bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-transform duration-300 cursor-pointer hover:scale-[1.03] hover:bg-[#cfcfcfab]">
 
                         <img src={escondidinho.img} alt={escondidinho.nome} className='w-45 h-32 object-cover rounded-l-xl' />
 
@@ -26,7 +37,12 @@ export default function Escondidinho(){
                     </div>
                 ))}
             </div>
-
+            {escondidinhoSelecionado && (
+                <ModalProduto
+                    produto={escondidinhoSelecionado}
+                    onFechar={() => setEscondidinhoSelecionado(null)}
+                />
+            )}
         </>
     )
 }

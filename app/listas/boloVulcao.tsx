@@ -1,12 +1,21 @@
 "use client";
+import { useState } from "react";
+import ModalProduto from "../components/modalProduto";
 
 export default function BoloVulcao() {
 
     const vulcoes = [
-        { id: 1, nome: "Red Velvet", preco: "R$ 10,00", img: "/vulcaoRedVelvet10.jpeg" },
-        { id: 2, nome: "Chocolate", preco: "R$ 10,00", img: "/vulcaoChocolate10.jpeg" },
+        { id: 1, nome: "Red Velvet", preco: "R$ 10,00", img: "/vulcaoRedVelvet10.jpeg", quantidadeDisponivel: 10 },
+        { id: 2, nome: "Chocolate", preco: "R$ 10,00", img: "/vulcaoChocolate10.jpeg", quantidadeDisponivel: 10 },
     ]
 
+    const [vulcaoSelecionado, setVulcaoSelecionado] = useState<{
+        id: number;
+        nome: string;
+        preco: string;
+        img: string;
+        quantidadeDisponivel: number;
+    } | null>(null)
 
     return (
         <>
@@ -14,7 +23,8 @@ export default function BoloVulcao() {
                 {vulcoes.map((vulcao) => (
                     <div
                         key={vulcao.id}
-                        className="flex items-center bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-transform duration-300 hover:scale-[1.03] hover:bg-[#cfcfcfab]">
+                        onClick={()=>setVulcaoSelecionado(vulcao)}
+                        className="flex items-center bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-transform duration-300 cursor-pointer hover:scale-[1.03] hover:bg-[#cfcfcfab]">
 
                         <img src={vulcao.img} alt={vulcao.nome} className='w-45 h-32 object-cover rounded-l-xl' />
 
@@ -26,7 +36,12 @@ export default function BoloVulcao() {
                     </div>
                 ))}
             </div>
-
+            {vulcaoSelecionado && (
+                <ModalProduto
+                    produto={vulcaoSelecionado}
+                    onFechar={() => setVulcaoSelecionado(null)}
+                />
+            )}
         </>
     )
 }

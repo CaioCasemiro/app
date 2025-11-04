@@ -50,7 +50,7 @@ export default function ModalProduto({ produto, onFechar }: ModalProdutoProps) {
                     onClick={onFechar}
                 >
                     <motion.div
-                        className="bg-white rounded-2xl shadow-lg w-[90%] max-w-md p-6 relative "
+                        className="bg-white rounded-2xl shadow-lg w-[90%] max-w-sm pt-8 pb-6 px-8 relative "
                         initial={{ scale: 0.9, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.9, opacity: 0 }}
@@ -59,7 +59,7 @@ export default function ModalProduto({ produto, onFechar }: ModalProdutoProps) {
                     >
                         <button
                             onClick={onFechar}
-                            className="absolute top-2 right-3 text-2xl font-bold text-gray-600 hover:text-gray-900"
+                            className="absolute top-0 right-3 text-2xl font-bold text-gray-600 hover:text-gray-900"
                         >
                             x
                         </button>
@@ -67,7 +67,7 @@ export default function ModalProduto({ produto, onFechar }: ModalProdutoProps) {
                         <img
                             src={produto.img}
                             alt={produto.nome}
-                            className="w-full h-90 object-cover rounded-lg mb-4" />
+                            className="w-full h-95 object-cover rounded-lg mb-4" />
 
                         <h2 className="text-xl font-[inter] font-semibold mb-2">{produto.nome}</h2>
                         <p className="text-sm text-gray-500 mb-3">Quantidade disponível: {produto.quantidadeDisponivel}</p>
