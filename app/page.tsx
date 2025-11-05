@@ -136,10 +136,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-        <div className="border-t border-[#d1b89b] mt-8 pt-4 text-center text-sm">
-          © {new Date().getFullYear()} Adocicada Doceria — Todos os direitos reservados.
-        </div>
       </footer>
 
 

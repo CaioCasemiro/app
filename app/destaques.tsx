@@ -46,7 +46,7 @@ export default function Destaques() {
                         >
                             <img src={produto.img}
                                 alt={produto.nome}
-                                className='flex-none w-28 h-28 object-cover rounded-l-xl' />
+                                className='flex-none w-20 h-28 object-cover rounded-l-xl' />
                             <div className="flex flex-col justify-center px-3 py-2 flex-1">
                                 <p className="font-semibold font-[quicksand] text-[#3e2723] text-sm leading-tight text-wrap wrap-break-word line-clamp-3">{produto.nome}</p>
                                 <p className='text-green-700 font-bold text-sm mt-1'>{produto.preco}</p>
