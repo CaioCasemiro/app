@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSacola } from "../context/sacolaContext";
 
 interface Produto {
     id: number;
@@ -18,6 +19,7 @@ interface ModalProdutoProps {
 export default function ModalProduto({ produto, onFechar }: ModalProdutoProps) {
 
     const [quantidade, setQuantidade] = useState(1)
+    const {adicionarProduto} = useSacola()
 
     if (!produto) return null
 
@@ -25,17 +27,16 @@ export default function ModalProduto({ produto, onFechar }: ModalProdutoProps) {
     const precoNumerico = parseFloat(produto.preco.replace("R$", "").replace(",", ".").trim());
     const precoTotal = precoNumerico * quantidade;
 
+    const adicionarNaSacola= () => {
+        adicionarProduto({
+            id: produto.id,
+            nome: produto.nome,
+            preco: precoNumerico,
+            img: produto.img,
+            quantidade,
+        })
 
-    const aumentar = () => {
-        if (quantidade < produto.quantidadeDisponivel) {
-            setQuantidade((q) => q + 1)
-        }
-    }
-
-    const diminuir = () => {
-        if (quantidade > 1) {
-            setQuantidade((q) => q - 1)
-        }
+        onFechar()
     }
 
     return (
@@ -91,7 +92,7 @@ export default function ModalProduto({ produto, onFechar }: ModalProdutoProps) {
                             <p className="text-lg font-bold text-[#6b3e26]">R$ {precoTotal.toFixed(2)}</p>
                         </div>
 
-                        <button onClick={() => console.log("Adicionar à sacola", produto, quantidade)}
+                        <button onClick={adicionarNaSacola}
                             className="bg-[#d4a574] hover:bg-[#c28e57] text-white font-semibold py-3 rounded-xl w-full transition">
                             Adicionar à sacola - R$ {precoTotal.toFixed(2)}
                         </button>

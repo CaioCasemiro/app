@@ -1,3 +1,4 @@
+
 "use client";
 
 import Categorias from './categorias';
@@ -9,10 +10,14 @@ import CopoDaFelicidade from './listas/copoDaFelicidade';
 import Escondidinho from './listas/escondidinho';
 import Fatias from './listas/fatias';
 import { useHorario } from '../hooks/useHorario';
+import SacolaDesktop from './components/SacolaDesktop';
+import SacolaMobile from './components/SacolaMobile';
+import { useSacola } from './context/sacolaContext';
 
 export default function Home() {
-  
-  const {textoBarra, corBarra} = useHorario()
+
+  const { textoBarra, corBarra } = useHorario()
+  const { abrirSacola } = useSacola()
 
   return (
     <>
@@ -24,9 +29,26 @@ export default function Home() {
             </a>
             <h1 className="ml-15 text-xl font-[raleway] font-bold hidden md:block">Adocicada doceria</h1>
           </div>
-          <div className="flex items-center gap-15 md:mr-5">
-            <a className="hover:underline font-[inter] hidden md:inline" href="/contatos">Contatos</a>
-            <a href="/">
+          <div className="flex items-center gap-10 md:mr-5">
+            
+            <div className='flex items-center  gap-10 mr-2'>
+              <a
+                  href="https://www.instagram.com/_adocicadadoceria"
+                  target="_blank"
+                  className="flex  gap-2 hover:underline hover:opacity-80 transition"
+                >
+                  <img src="/instagram.png" alt="Instagram logo" className="w-12 h-12" />
+                </a>
+              <a
+                  href="https://api.whatsapp.com/send/?phone=%2B5589994282685&text&type=phone_number&app_absent=0"
+                  target="_blank"
+                  className="flex gap-2 hover:underline hover:opacity-80 transition"
+                >
+                  <img src="/whatsapp.png" alt="WhatsApp logo" className="w-12 h-12" />
+                </a>
+            </div>
+
+            <a onClick={abrirSacola} className='cursor-pointer lg:hidden'>
               <img className="w-10 h-11 block md:hidden" src="/saco.png" alt="sacola de pedidos" />
             </a>
           </div>
@@ -36,50 +58,55 @@ export default function Home() {
         </div>
       </div>
 
+      <div className="lg:flex lg:gap-8">
+        <main className="mt-40 md:mt-10 lg:flex-1">
+          <section className='px-4 md:px-8 mx-auto mb-12 z-20'>
+            <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-8'>Destaques do dia</h3>
+            <Destaques />
+          </section>
 
-      <main className="mt-40 md:mt-10">
+          <section className='px-4 md:px-1 mx-auto'>
+            <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold'>Categorias</h3>
+            <Categorias />
+          </section>
 
-        <section className='px-4 md:px-8 mx-auto mb-12 z-20'>
-          <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-8'>Destaques do dia</h3>
-          <Destaques />
-        </section>
+          <section id="bolosNoPote" className='px-4 md:px-8 mx-auto mb-10'>
+            <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Bolos no pote</h3>
+            <BolosNoPote />
+          </section>
 
-        <section className='px-4 md:px-1 mx-auto'>
-          <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold'>Categorias</h3>
-          <Categorias />
-        </section>
+          <section id="copoDaFelicidade" className='px-4 md:px-8 mx-auto mb-10'>
+            <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Copos da felicidade</h3>
+            <CopoDaFelicidade />
+          </section>
 
-        <section id="bolosNoPote" className='px-4 md:px-8 mx-auto mb-10'>
-          <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Bolos no pote</h3>
-          <BolosNoPote />
-        </section>
+          <section id="boloVulcao" className='px-4 md:px-8 mx-auto mb-10'>
+            <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Bolos vulcão</h3>
+            <BoloVulcao />
+          </section>
 
-        <section id="copoDaFelicidade" className='px-4 md:px-8 mx-auto mb-10'>
-          <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Copos da felicidade</h3>
-          <CopoDaFelicidade />
-        </section>
+          <section id="escondidinhoDeBrownie" className='px-4 md:px-8 mx-auto mb-10'>
+            <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Escondidinhos de brownie</h3>
+            <Escondidinho />
+          </section>
 
-        <section id="boloVulcao" className='px-4 md:px-8 mx-auto mb-10'>
-          <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Bolos vulcão</h3>
-          <BoloVulcao />
-        </section>
+          <section id="bomBons" className='px-4 md:px-8 mx-auto mb-10'>
+            <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Bombons</h3>
+            <Bombons />
+          </section>
 
-        <section id="escondidinhoDeBrownie" className='px-4 md:px-8 mx-auto mb-10'>
-          <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Escondidinhos de brownie</h3>
-          <Escondidinho />
-        </section>
+          <section id="fatiasDeBolo" className='px-4 md:px-8 mx-auto mb-10'>
+            <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Fatias de bolo</h3>
+            <Fatias />
+          </section>
+        </main>
 
-        <section id="bomBons" className='px-4 md:px-8 mx-auto mb-10'>
-          <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Bombons</h3>
-          <Bombons />
-        </section>
+        <aside className="hidden lg:block lg:w-[360px] lg:mr-4">
+          <SacolaDesktop />
+        </aside>
+      </div>
 
-        <section id="fatiasDeBolo" className='px-4 md:px-8 mx-auto mb-10'>
-          <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Fatias de bolo</h3>
-          <Fatias />
-        </section>
-
-      </main>
+      <SacolaMobile />
 
       <footer className="mt-25 py-10 text-[#3e2723] bg-[#E8CCAC] font-[quicksand]">
         <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-3 gap-8">
@@ -137,9 +164,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-
-
-
     </>
   );
 }
