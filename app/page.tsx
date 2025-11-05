@@ -29,9 +29,9 @@ export default function Home() {
             </a>
             <h1 className="ml-15 text-xl font-[raleway] font-bold hidden md:block">Adocicada doceria</h1>
           </div>
-          <div className="flex items-center gap-10 md:mr-5">
+          <div className="flex items-center gap-6 md:mr-5">
             
-            <div className='flex items-center  gap-10 mr-2'>
+            <div className='flex items-center  gap-6 mr-1'>
               <a
                   href="https://www.instagram.com/_adocicadadoceria"
                   target="_blank"
