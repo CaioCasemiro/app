@@ -2,12 +2,13 @@
 import { useState } from "react";
 import ModalProduto from "../components/modalProduto";
 
-export default function Fatias() {
 
+export default function Fatias() {
+    
     const fatias = [
-        { id: 1, nome: "Doce de leite", preco: "R$ 8,00", img: "/doceDeLeite8.jpeg", quantidadeDisponivel: 10 },
-        { id: 2, nome: "Red velvet", preco: "R$ 8,00", img: "/redVelvet8.jpeg", quantidadeDisponivel: 10 },
-        { id: 3, nome: "Dois amores", preco: "R$ 8,00", img: "/doisAmores8.jpeg", quantidadeDisponivel: 10 },
+        { id: 1, nome: "Fatias de doce de leite", preco: "R$ 8,00", img: "/doceDeLeite8.jpeg", quantidadeDisponivel: 10 },
+        { id: 2, nome: "Fatias de red velvet", preco: "R$ 8,00", img: "/redVelvet8.jpeg", quantidadeDisponivel: 10 },
+        { id: 3, nome: "Fatia de dois amores", preco: "R$ 8,00", img: "/doisAmores8.jpeg", quantidadeDisponivel: 10 },
     ]
 
     const [fatiaSelecionada, setFatiaSelecionada] = useState<{

@@ -2,11 +2,12 @@
 import { useState } from "react";
 import ModalProduto from "../components/modalProduto";
 
-export default function Escondidinho() {
 
+export default function Escondidinho() {
+    
     const escondidinhos = [
-        { id: 1, nome: "Chocolate", preco: "R$ 12,00", img: "/escondidinhoChocolate12.jpeg", quantidadeDisponivel: 10 },
-        { id: 2, nome: "Ninho com nutella", preco: "R$ 12,00", img: "/escondidinhoNinhoNutella12.jpeg", quantidadeDisponivel: 10 },
+        { id: 1, nome: "Escondidinho de chocolate", preco: "R$ 12,00", img: "/escondidinhoChocolate12.jpeg", quantidadeDisponivel: 10 },
+        { id: 2, nome: "Escondidinho de ninho com nutella", preco: "R$ 12,00", img: "/escondidinhoNinhoNutella12.jpeg", quantidadeDisponivel: 10 },
     ]
 
     const [escondidinhoSelecionado, setEscondidinhoSelecionado] = useState<{

@@ -2,14 +2,15 @@
 import { useState } from "react";
 import ModalProduto from "../components/modalProduto";
 
-export default function BolosNoPote() {
 
+export default function BolosNoPote() {
+    
     const bolosNoPote = [
-        { id: 1, nome: "Chocolate", preco: "R$ 10,00", img: "/boloChocolate10.jpeg", quantidadeDisponivel: 10 },
-        { id: 2, nome: "Ninho com nutella", preco: "R$ 10,00", img: "/ninhoComNutella10.jpeg", quantidadeDisponivel: 7 },
-        { id: 3, nome: "Ninho com morango", preco: "R$ 10,00", img: "/ninhoComMorango10.jpeg", quantidadeDisponivel: 5 },
-        { id: 4, nome: "Ninho com chocolate", preco: "R$ 10,00", img: "/ninhoComChocolate10.jpeg", quantidadeDisponivel: 6 },
-        { id: 5, nome: "Red Velvet", preco: "R$ 10,00", img: "/redVelvet10.jpeg", quantidadeDisponivel: 10 },
+        { id: 1, nome: "Bolo no pote de chocolate", preco: "R$ 10,00", img: "/boloChocolate10.jpeg", quantidadeDisponivel: 10 },
+        { id: 2, nome: "Bolo no pote de ninho com nutella", preco: "R$ 10,00", img: "/ninhoComNutella10.jpeg", quantidadeDisponivel: 7 },
+        { id: 3, nome: "Bolo no pote de ninho com morango", preco: "R$ 10,00", img: "/ninhoComMorango10.jpeg", quantidadeDisponivel: 5 },
+        { id: 4, nome: "Bolo no pote de ninho com chocolate", preco: "R$ 10,00", img: "/ninhoComChocolate10.jpeg", quantidadeDisponivel: 6 },
+        { id: 5, nome: "Bolo no pote de red Velvet", preco: "R$ 10,00", img: "/redVelvet10.jpeg", quantidadeDisponivel: 10 },
     ]
 
     const [boloSelecionado, setBoloSelecionado] = useState < {

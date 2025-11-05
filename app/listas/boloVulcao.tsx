@@ -2,11 +2,12 @@
 import { useState } from "react";
 import ModalProduto from "../components/modalProduto";
 
-export default function BoloVulcao() {
 
+export default function BoloVulcao() {
+    
     const vulcoes = [
-        { id: 1, nome: "Red Velvet", preco: "R$ 10,00", img: "/vulcaoRedVelvet10.jpeg", quantidadeDisponivel: 10 },
-        { id: 2, nome: "Chocolate", preco: "R$ 10,00", img: "/vulcaoChocolate10.jpeg", quantidadeDisponivel: 10 },
+        { id: 1, nome: "Bolo vulcão de red Velvet", preco: "R$ 10,00", img: "/vulcaoRedVelvet10.jpeg", quantidadeDisponivel: 10 },
+        { id: 2, nome: "Bolo vulcão de chocolate", preco: "R$ 10,00", img: "/vulcaoChocolate10.jpeg", quantidadeDisponivel: 10 },
     ]
 
     const [vulcaoSelecionado, setVulcaoSelecionado] = useState<{

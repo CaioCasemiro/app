@@ -2,13 +2,14 @@
 import { useState } from "react";
 import ModalProduto from "../components/modalProduto";
 
-export default function CopoDaFelicidade() {
 
+export default function CopoDaFelicidade() {
+    
     const coposDaFelicidade = [
         { id: 1, nome: "Choconinho", preco: "R$ 10,00", img: "/choconinho10.jpeg", quantidadeDisponivel: 13 },
         { id: 2, nome: "Chocotudo", preco: "R$ 10,00", img: "/chocotudo10.jpeg", quantidadeDisponivel: 13 },
-        { id: 3, nome: "Maracujá", preco: "R$ 10,00", img: "/maracuja10.jpeg", quantidadeDisponivel: 13 },
-        { id: 4, nome: "Kit Kat", preco: "R$ 10,00", img: "/kitKat10.jpeg", quantidadeDisponivel: 13 },
+        { id: 3, nome: "Copo de maracujá", preco: "R$ 10,00", img: "/maracuja10.jpeg", quantidadeDisponivel: 13 },
+        { id: 4, nome: "Copo de Kit Kat", preco: "R$ 10,00", img: "/kitKat10.jpeg", quantidadeDisponivel: 13 },
         { id: 5, nome: "Copo dos desejos", preco: "R$ 10,00", img: "/desejos10.jpeg", quantidadeDisponivel: 13 },
     ]
 

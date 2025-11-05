@@ -2,15 +2,16 @@
 import { useState } from "react";
 import ModalProduto from "../components/modalProduto";
 
-export default function Bombons(){
 
+export default function Bombons(){    
+    
     const bombons = [
-        { id: 1, nome: "Morango", preco: "R$ 12,00", img: "/bombomMorango12.jpeg", quantidadeDisponivel: 10  },
-        { id: 2, nome: "Uva", preco: "R$ 12,00", img: "/bombomUva12.jpeg", quantidadeDisponivel: 10  },
-        { id: 3, nome: "Geleia de morango", preco: "R$ 12,00", img: "/geleiaMorango12.jpeg", quantidadeDisponivel: 10  },
-    ]
+            { id: 1, nome: "Bombom de morango", preco: "R$ 12,00", img: "/bombomMorango12.jpeg", quantidadeDisponivel: 10  },
+            { id: 2, nome: "Bombom de uva", preco: "R$ 12,00", img: "/bombomUva12.jpeg", quantidadeDisponivel: 10  },
+            { id: 3, nome: "Bombom de geleia de morango", preco: "R$ 12,00", img: "/geleiaMorango12.jpeg", quantidadeDisponivel: 10  },
+        ]
 
-    const [bombomSelecionado, setBombomSelecionado] = useState<{
+        const [bombomSelecionado, setBombomSelecionado] = useState<{
             id: number;
             nome: string;
             preco: string;
