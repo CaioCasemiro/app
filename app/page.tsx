@@ -39,7 +39,7 @@ export default function Home() {
 
       <main className="mt-40 md:mt-10">
 
-        <section className='px-4 md:px-1 mx-auto'>
+        <section className='px-4 md:px-8 mx-auto mb-12 z-20'>
           <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-8'>Destaques do dia</h3>
           <Destaques />
         </section>
@@ -49,32 +49,32 @@ export default function Home() {
           <Categorias />
         </section>
 
-        <section id="bolosNoPote" className='px-4 md:px-1 mx-auto mb-10'>
+        <section id="bolosNoPote" className='px-4 md:px-8 mx-auto mb-10'>
           <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Bolos no pote</h3>
           <BolosNoPote />
         </section>
 
-        <section id="copoDaFelicidade" className='px-4 md:px-1 mx-auto mb-10'>
+        <section id="copoDaFelicidade" className='px-4 md:px-8 mx-auto mb-10'>
           <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Copos da felicidade</h3>
           <CopoDaFelicidade />
         </section>
 
-        <section id="boloVulcao" className='px-4 md:px-1 mx-auto mb-10'>
+        <section id="boloVulcao" className='px-4 md:px-8 mx-auto mb-10'>
           <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Bolos vulcão</h3>
           <BoloVulcao />
         </section>
 
-        <section id="escondidinhoDeBrownie" className='px-4 md:px-1 mx-auto mb-10'>
+        <section id="escondidinhoDeBrownie" className='px-4 md:px-8 mx-auto mb-10'>
           <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Escondidinhos de brownie</h3>
           <Escondidinho />
         </section>
 
-        <section id="bomBons" className='px-4 md:px-1 mx-auto mb-10'>
+        <section id="bomBons" className='px-4 md:px-8 mx-auto mb-10'>
           <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Bombons</h3>
           <Bombons />
         </section>
 
-        <section id="fatiasDeBolo" className='px-4 md:px-1 mx-auto mb-10'>
+        <section id="fatiasDeBolo" className='px-4 md:px-8 mx-auto mb-10'>
           <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold mb-10'>Fatias de bolo</h3>
           <Fatias />
         </section>

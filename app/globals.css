@@ -35,7 +35,7 @@ header {
   width: 100%;
   height: 100px;
   align-items: center;
-  padding: 0 80px;
+  padding: 0 55px;
 }
 
 .swiper-button-next,
@@ -63,4 +63,12 @@ header {
 .swiper-button-prev::after {
   font-size: 20px !important; 
   color: #000 !important;
+}
+
+.swiper {
+  overflow: visible !important;
+}
+
+.swiper-wrapper {
+  overflow: visible !important;
 }

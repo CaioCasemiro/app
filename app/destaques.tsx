@@ -34,7 +34,7 @@ export default function Destaques() {
                     modules={[Navigation]}
                     navigation={true}
                     spaceBetween={25}
-                    slidesPerView={2.7}
+                    slidesPerView={1.7}
                     centeredSlides={false}
                     className="px-4 overflow-visible"
                 >
@@ -42,32 +42,37 @@ export default function Destaques() {
                         <SwiperSlide
                             key={produto.id}
                             onClick={()=>setProdutoSelecionado(produto)}
-                            className="bg-white rounded-lg shadow-md p-3.5 w-48 flex flex-col items-center justify-between text-center mb-10 hover:bg-[#cfcfcfab] cursor-pointer transition-transform hover:scale-[1.02] h-[280px]!"
+                            className="flex! flex-row! items-center bg-white rounded-xl shadow-md overflow-visible hover:shadow-lg transition-transform cursor-pointer duration-300 hover:scale-[1.03] hover:bg-[#cfcfcfab] h-32"
                         >
                             <img src={produto.img}
                                 alt={produto.nome}
-                                className='w-35 mx-auto h-40 object-cover rounded-lg' />
-                            <p className='mt-3.5 font-semibold font-[quicksand] text-center'>{produto.nome}</p>
-                            <p className='text-green-700 font-bold mt-1'>{produto.preco}</p>
+                                className='flex-none w-28 h-28 object-cover rounded-l-xl' />
+                            <div className="flex flex-col justify-center px-3 py-2 flex-1">
+                                <p className="font-semibold font-[quicksand] text-[#3e2723] text-sm leading-tight text-wrap wrap-break-word line-clamp-3">{produto.nome}</p>
+                                <p className='text-green-700 font-bold text-sm mt-1'>{produto.preco}</p>
+                            </div>
                         </SwiperSlide>
                     ))}
                 </Swiper>
             </div>
 
-            <div className="hidden md:flex md:flex-wrap md:justify-center md:gap-8 mt-6">
+            <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                 {produtos.map((produto) => (
                     <div
                         key={produto.id}
                         onClick={()=>setProdutoSelecionado(produto)}
-                        className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center w-[200px] mb-10 hover:bg-[#cfcfcfab] transition-transform cursor-pointer hover:scale-[1.03]"
+                        className="flex items-center bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-transform cursor-pointer duration-300 hover:scale-[1.03] hover:bg-[#cfcfcfab] h-32"
                     >
                         <img
                             src={produto.img}
                             alt={produto.nome}
-                            className="w-[80%] h-40 object-cover rounded-md"
-                        />
-                        <p className="mt-2 font-semibold font-[quicksand] text-center">{produto.nome}</p>
-                        <p className="text-green-700 font-bold mt-1">{produto.preco}</p>
+                            className='w-44 h-32 object-cover rounded-l-xl' />
+
+                        <div className="flex flex-col justify-center px-4 py-2 w-full">
+                            <p className='font-semibold font-[quicksand] text-[#3e2723]  text-lg'>{produto.nome}</p>
+
+                            <p className='text-green-700 font-bold text-base mt-1'>{produto.preco}</p>
+                        </div>
                     </div>
                 ))}
             </div>
