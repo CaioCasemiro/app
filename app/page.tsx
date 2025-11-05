@@ -29,7 +29,7 @@ export default function Home() {
             </a>
             <h1 className="ml-15 text-xl font-[raleway] font-bold hidden md:block">Adocicada doceria</h1>
           </div>
-          <div className="flex items-center gap-6 md:mr-5">
+          <div className="flex items-center gap-6 md:mr-">
             
             <div className='flex items-center  gap-6 mr-1'>
               <a
@@ -37,7 +37,7 @@ export default function Home() {
                   target="_blank"
                   className="flex  gap-2 hover:underline hover:opacity-80 transition"
                 >
-                  <img src="/instagram.png" alt="Instagram logo" className="w-12 h-12" />
+                  <img src="/instagram.png" alt="Instagram logo" className="w-12 h-12 hidden md:inline" />
                 </a>
               <a
                   href="https://api.whatsapp.com/send/?phone=%2B5589994282685&text&type=phone_number&app_absent=0"
