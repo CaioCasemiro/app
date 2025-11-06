@@ -2,6 +2,13 @@
 
 import type { ItemSacola } from "../context/sacolaContext";
 
+const bairrosDisponiveis = [
+    { nome: "Centro", taxa: 5 },
+    { nome: "Jardim das Flores", taxa: 8 },
+    { nome: "Vila Nova", taxa: 10 },
+    { nome: "Residencial Aurora", taxa: 12 },
+];
+
 interface CheckoutModalProps {
     itens: ItemSacola[];
     total: number;
@@ -21,6 +28,10 @@ interface CheckoutModalProps {
     setNumero: (valor: string) => void;
     bairro: string;
     setBairro: (valor: string) => void;
+    pontoReferencia: string;
+    setPontoReferencia: (valor: string) => void;
+    valorEntrega: number;
+    setValorEntrega: (valor: number) => void;
 }
 
 export default function CheckoutModal({
@@ -42,7 +53,15 @@ export default function CheckoutModal({
     setNumero,
     bairro,
     setBairro,
+    pontoReferencia,
+    setPontoReferencia,
+    valorEntrega,
+    setValorEntrega,
 }: CheckoutModalProps) {
+
+    const totalComEntrega = modoEntrega === "delivery" ? total + (valorEntrega || 0) : total;
+
+
     return (
         <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
 
@@ -80,7 +99,7 @@ export default function CheckoutModal({
 
                     <div className="flex justify-between font-semibold mt-2 border-t pt-2">
                         <span>Total: </span>
-                        <span>R$ {total.toFixed(2)}</span>
+                        <span>R$ {totalComEntrega.toFixed(2)}</span>
                     </div>
                 </div>
 
@@ -128,7 +147,6 @@ export default function CheckoutModal({
                     />
                 </div>
 
-                {/* Endereço (só se delivery) */}
                 {modoEntrega === "delivery" && (
                     <div className="flex flex-col gap-3 mb-4">
                         <h3 className="font-medium mb-2">Endereço de entrega</h3>
@@ -146,13 +164,36 @@ export default function CheckoutModal({
                             placeholder="Número"
                             className="p-2 border rounded-md"
                         />
-                        <input
-                            type="text"
-                            value={bairro}
-                            onChange={(e) => setBairro(e.target.value)}
-                            placeholder="Bairro"
-                            className="p-2 border rounded-md"
-                        />
+                        <div className="flex flex-col">
+                            <label className="font-medium mb-1">Ponto de referência:</label>
+                            <input
+                                type="text"
+                                value={pontoReferencia}
+                                onChange={(e) => setPontoReferencia(e.target.value)}
+                                className="border p-2 rounded-lg"
+                                placeholder="Ex: perto da escola, em frente à padaria..."
+                            />
+                        </div>
+                        <div className="flex flex-col">
+                            <label className="font-medium mb-1">Bairro:</label>
+                            <select
+                                value={bairro}
+                                onChange={(e) => {
+                                    const selecionado = bairrosDisponiveis.find(b => b.nome === e.target.value);
+                                    setBairro(e.target.value);
+                                    setValorEntrega(selecionado ? selecionado.taxa : 0);
+                                }}
+                                className="border p-2 rounded-lg bg-white"
+                            >
+                                <option value="">Selecione um bairro...</option>
+                                {bairrosDisponiveis.map((b, i) => (
+                                    <option key={i} value={b.nome}>
+                                        {b.nome} — R$ {b.taxa.toFixed(2)}
+                                    </option>
+                                ))}
+                            </select>
+
+                        </div>
                     </div>
                 )}
 

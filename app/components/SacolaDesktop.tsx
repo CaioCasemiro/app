@@ -16,11 +16,13 @@ export default function SacolaDesktop() {
     const [rua, setRua] = useState("");
     const [numero, setNumero] = useState("");
     const [bairro, setBairro] = useState("");
+    const [valorEntrega, setValorEntrega] = useState(0);
+    const [pontoReferencia, setPontoReferencia] = useState("");
+
 
     const total = itens.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
 
     function confirmarPedido() {
-        
         if (!nome.trim()) return alert("Informe seu nome.");
         if (!telefone.trim()) return alert("Informe seu telefone.");
 
@@ -30,14 +32,20 @@ export default function SacolaDesktop() {
             }
         }
 
+        const totalComEntrega =
+            modoEntrega === "delivery" ? total + valorEntrega : total;
+
         const pedido = {
             itens,
-            total,
+            total: totalComEntrega,
+            valorEntrega: modoEntrega === "delivery" ? valorEntrega : 0,
             modoEntrega,
             formaPagamento,
             nome,
             telefone,
-            ...(modoEntrega === "delivery" && { endereco: { rua, numero, bairro } }),
+            ...(modoEntrega === "delivery" && {
+                endereco: { rua, numero, bairro, pontoReferencia },
+            }),
             criadoEm: new Date().toISOString(),
         };
 
@@ -115,6 +123,8 @@ export default function SacolaDesktop() {
                     formaPagamento={formaPagamento}
                     setModoEntrega={setModoEntrega}
                     setFormaPagamento={setFormaPagamento}
+                    onFechar={() => setCheckoutAberto(false)}
+                    onConfirmar={confirmarPedido}
                     nome={nome}
                     setNome={setNome}
                     telefone={telefone}
@@ -125,8 +135,10 @@ export default function SacolaDesktop() {
                     setNumero={setNumero}
                     bairro={bairro}
                     setBairro={setBairro}
-                    onFechar={() => setCheckoutAberto(false)}
-                    onConfirmar={confirmarPedido}
+                    pontoReferencia={pontoReferencia}
+                    setPontoReferencia={setPontoReferencia}
+                    valorEntrega={valorEntrega}
+                    setValorEntrega={setValorEntrega}
                 />
             )}
         </div>

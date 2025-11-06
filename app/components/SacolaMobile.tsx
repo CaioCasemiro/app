@@ -16,11 +16,13 @@ export default function SacolaMobile() {
     const [rua, setRua] = useState("");
     const [numero, setNumero] = useState("");
     const [bairro, setBairro] = useState("");
+    const [valorEntrega, setValorEntrega] = useState(0);
+    const [pontoReferencia, setPontoReferencia] = useState("");
+
 
     const total = itens.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
 
     function confirmarPedido() {
-
         if (!nome.trim()) return alert("Informe seu nome.");
         if (!telefone.trim()) return alert("Informe seu telefone.");
 
@@ -30,14 +32,20 @@ export default function SacolaMobile() {
             }
         }
 
+        const totalComEntrega =
+            modoEntrega === "delivery" ? total + valorEntrega : total;
+
         const pedido = {
             itens,
-            total,
+            total: totalComEntrega,
+            valorEntrega: modoEntrega === "delivery" ? valorEntrega : 0,
             modoEntrega,
             formaPagamento,
             nome,
             telefone,
-            ...(modoEntrega === "delivery" && { endereco: { rua, numero, bairro } }),
+            ...(modoEntrega === "delivery" && {
+                endereco: { rua, numero, bairro, pontoReferencia },
+            }),
             criadoEm: new Date().toISOString(),
         };
 
@@ -53,6 +61,7 @@ export default function SacolaMobile() {
             {aberta && (
                 <>
                     <motion.div
+                        key="sacola-overlay"
                         className="fixed inset-0 bg-black/50 z-40 lg:hidden"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -60,6 +69,7 @@ export default function SacolaMobile() {
                         onClick={fecharSacola}
                     />
                     <motion.div
+                        key="sacola-panel"
                         className="fixed top-0 right-0 h-full w-[90%] sm:w-[400px] bg-white shadow-2xl z-50 flex flex-col lg:hidden"
                         initial={{ x: "100%" }}
                         animate={{ x: 0 }}
@@ -128,12 +138,15 @@ export default function SacolaMobile() {
 
             {checkoutAberto && (
                 <CheckoutModal
+                    key="checkout-modal"
                     itens={itens}
                     total={total}
                     modoEntrega={modoEntrega}
                     formaPagamento={formaPagamento}
                     setModoEntrega={setModoEntrega}
                     setFormaPagamento={setFormaPagamento}
+                    onFechar={() => setCheckoutAberto(false)}
+                    onConfirmar={confirmarPedido}
                     nome={nome}
                     setNome={setNome}
                     telefone={telefone}
@@ -144,8 +157,10 @@ export default function SacolaMobile() {
                     setNumero={setNumero}
                     bairro={bairro}
                     setBairro={setBairro}
-                    onFechar={() => setCheckoutAberto(false)}
-                    onConfirmar={confirmarPedido}
+                    pontoReferencia={pontoReferencia}
+                    setPontoReferencia={setPontoReferencia}
+                    valorEntrega={valorEntrega}
+                    setValorEntrega={setValorEntrega}
                 />
             )}
         </AnimatePresence>
