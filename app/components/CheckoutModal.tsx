@@ -116,7 +116,7 @@ export default function CheckoutModal({
 
     return (
         <div
-            className="fixed inset-0 bg-black/50 flex justify-center items-center z-50"
+            className="fixed inset-0 bg-black/50 flex justify-center items-start sm:items-center z-50"
             onTouchMove={(e) => {
                 const target = e.target as HTMLElement | null;
                 if (!target || !target.closest('.checkout-modal-content')) {
@@ -125,7 +125,7 @@ export default function CheckoutModal({
             }}
         >
 
-            <div className="bg-white w-full p-5 overflow-y-auto h-full checkout-modal-content">
+            <div className="bg-white w-full h-full sm:h-auto sm:w-[500px] sm:max-h-[90vh] sm:rounded-lg p-5 overflow-y-auto checkout-modal-content">
 
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-semibold">Finalizar pedido</h2>
