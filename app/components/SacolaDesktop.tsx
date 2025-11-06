@@ -50,6 +50,7 @@ export default function SacolaDesktop() {
         };
 
         console.log("Pedido confirmado:", pedido);
+        window.alert("Pedido realizado!")
 
         limparSacola();
         setCheckoutAberto(false);

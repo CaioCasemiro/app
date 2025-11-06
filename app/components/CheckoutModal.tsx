@@ -1,12 +1,13 @@
 "use client";
 
+import { useEffect } from "react";
 import type { ItemSacola } from "../context/sacolaContext";
 
 const bairrosDisponiveis = [
-    { nome: "Centro", taxa: 5 },
-    { nome: "Jardim das Flores", taxa: 8 },
-    { nome: "Vila Nova", taxa: 10 },
-    { nome: "Residencial Aurora", taxa: 12 },
+    { nome: "Cohab", taxa: 5 },
+    { nome: "Paraibinha", taxa: 8 },
+    { nome: "Junco", taxa: 10 },
+    { nome: "Pedrinhas", taxa: 12 },
 ];
 
 interface CheckoutModalProps {
@@ -61,11 +62,70 @@ export default function CheckoutModal({
 
     const totalComEntrega = modoEntrega === "delivery" ? total + (valorEntrega || 0) : total;
 
+    useEffect(() => {
+        const scrollY = window.scrollY || document.documentElement.scrollTop;
+
+        const previous = {
+            position: document.body.style.position,
+            top: document.body.style.top,
+            left: document.body.style.left,
+            right: document.body.style.right,
+            overflow: document.body.style.overflow,
+            width: document.body.style.width,
+        };
+
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollY}px`;
+        document.body.style.left = '0';
+        document.body.style.right = '0';
+        document.body.style.width = '100%';
+        document.body.style.overflow = 'hidden';
+
+        const touchHandler = (e: TouchEvent) => {
+            const target = e.target as HTMLElement | null;
+            if (!target || !target.closest('.checkout-modal-content')) {
+                e.preventDefault();
+            }
+        };
+
+        const wheelHandler = (e: WheelEvent) => {
+            const target = e.target as HTMLElement | null;
+            if (!target || !target.closest('.checkout-modal-content')) {
+                e.preventDefault();
+            }
+        };
+
+        document.addEventListener('touchmove', touchHandler, { passive: false });
+        document.addEventListener('wheel', wheelHandler, { passive: false, capture: true });
+
+        return () => {
+            document.removeEventListener('touchmove', touchHandler);
+            document.removeEventListener('wheel', wheelHandler, { passive: false, capture: true } as any);
+
+            document.body.style.position = previous.position || '';
+            document.body.style.top = previous.top || '';
+            document.body.style.left = previous.left || '';
+            document.body.style.right = previous.right || '';
+            document.body.style.overflow = previous.overflow || '';
+            document.body.style.width = previous.width || '';
+
+            window.scrollTo(0, scrollY);
+        };
+    }, []);
+
 
     return (
-        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+        <div
+            className="fixed inset-0 bg-black/50 flex justify-center items-center z-50"
+            onTouchMove={(e) => {
+                const target = e.target as HTMLElement | null;
+                if (!target || !target.closest('.checkout-modal-content')) {
+                    e.preventDefault();
+                }
+            }}
+        >
 
-            <div className="bg-white w-[90%] max-w-md p-5 rounded-lg overflow-y-auto max-h-[90vh]">
+            <div className="bg-white w-full p-5 overflow-y-auto h-full checkout-modal-content">
 
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-semibold">Finalizar pedido</h2>
