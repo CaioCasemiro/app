@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
-interface ItemSacola {
+export interface ItemSacola {
     id: number;
     nome: string;
     preco: number;

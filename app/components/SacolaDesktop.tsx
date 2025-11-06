@@ -1,11 +1,52 @@
 "use client";
 
 import { useSacola } from "../context/sacolaContext";
+import { useState } from "react";
+import CheckoutModal from "./CheckoutModal";
+
 
 export default function SacolaDesktop() {
     const { itens, removerProduto, limparSacola } = useSacola();
 
+    const [checkoutAberto, setCheckoutAberto] = useState(false);
+    const [modoEntrega, setModoEntrega] = useState<"delivery" | "retirada">("delivery");
+    const [formaPagamento, setFormaPagamento] = useState<"pix" | "dinheiro">("pix");
+    const [nome, setNome] = useState("");
+    const [telefone, setTelefone] = useState("");
+    const [rua, setRua] = useState("");
+    const [numero, setNumero] = useState("");
+    const [bairro, setBairro] = useState("");
+
     const total = itens.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
+
+    function confirmarPedido() {
+        
+        if (!nome.trim()) return alert("Informe seu nome.");
+        if (!telefone.trim()) return alert("Informe seu telefone.");
+
+        if (modoEntrega === "delivery") {
+            if (!rua.trim() || !numero.trim() || !bairro.trim()) {
+                return alert("Preencha o endereço completo para delivery.");
+            }
+        }
+
+        const pedido = {
+            itens,
+            total,
+            modoEntrega,
+            formaPagamento,
+            nome,
+            telefone,
+            ...(modoEntrega === "delivery" && { endereco: { rua, numero, bairro } }),
+            criadoEm: new Date().toISOString(),
+        };
+
+        console.log("Pedido confirmado:", pedido);
+
+        limparSacola();
+        setCheckoutAberto(false);
+    }
+
 
 
     return (
@@ -61,11 +102,34 @@ export default function SacolaDesktop() {
                     >
                         Limpar sacola
                     </button>
-                    <button className="w-full bg-[#d4a574] hover:bg-[#c28e57] text-white font-semibold py-3 rounded-lg transition">
+                    <button onClick={() => setCheckoutAberto(true)} className="w-full bg-[#d4a574] hover:bg-[#c28e57] text-white font-semibold py-3 rounded-lg transition">
                         Finalizar pedido
                     </button>
                 </div>
             )}
+            {checkoutAberto && (
+                <CheckoutModal
+                    itens={itens}
+                    total={total}
+                    modoEntrega={modoEntrega}
+                    formaPagamento={formaPagamento}
+                    setModoEntrega={setModoEntrega}
+                    setFormaPagamento={setFormaPagamento}
+                    nome={nome}
+                    setNome={setNome}
+                    telefone={telefone}
+                    setTelefone={setTelefone}
+                    rua={rua}
+                    setRua={setRua}
+                    numero={numero}
+                    setNumero={setNumero}
+                    bairro={bairro}
+                    setBairro={setBairro}
+                    onFechar={() => setCheckoutAberto(false)}
+                    onConfirmar={confirmarPedido}
+                />
+            )}
         </div>
     );
 }
+

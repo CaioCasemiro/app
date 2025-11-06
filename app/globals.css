@@ -47,13 +47,12 @@ header {
   z-index: 10;
 }
 
-/* Garantir que os botões de navegação do Swiper fiquem visíveis */
 .swiper-button-next,
 .swiper-button-prev {
-  z-index: 50; /* acima dos slides */
+  z-index: 50;
 }
 
-/* Ajuste opcional: aumentar área clicável */
+
 .swiper-button-next::after,
 .swiper-button-prev::after {
   font-size: 20px;

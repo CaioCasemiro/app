@@ -2,26 +2,65 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useSacola } from "../context/sacolaContext";
+import { useState } from "react";
+import CheckoutModal from "./CheckoutModal";
 
 export default function SacolaMobile() {
     const { aberta, fecharSacola, itens, removerProduto, limparSacola } = useSacola();
 
+    const [checkoutAberto, setCheckoutAberto] = useState(false);
+    const [modoEntrega, setModoEntrega] = useState<"delivery" | "retirada">("delivery");
+    const [formaPagamento, setFormaPagamento] = useState<"pix" | "dinheiro">("pix");
+    const [nome, setNome] = useState("");
+    const [telefone, setTelefone] = useState("");
+    const [rua, setRua] = useState("");
+    const [numero, setNumero] = useState("");
+    const [bairro, setBairro] = useState("");
+
     const total = itens.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
 
-    // Este componente é o modal lateral animado, usado em telas menores (mobile)
+    function confirmarPedido() {
+
+        if (!nome.trim()) return alert("Informe seu nome.");
+        if (!telefone.trim()) return alert("Informe seu telefone.");
+
+        if (modoEntrega === "delivery") {
+            if (!rua.trim() || !numero.trim() || !bairro.trim()) {
+                return alert("Preencha o endereço completo para delivery.");
+            }
+        }
+
+        const pedido = {
+            itens,
+            total,
+            modoEntrega,
+            formaPagamento,
+            nome,
+            telefone,
+            ...(modoEntrega === "delivery" && { endereco: { rua, numero, bairro } }),
+            criadoEm: new Date().toISOString(),
+        };
+
+        console.log("Pedido confirmado:", pedido);
+
+        limparSacola();
+        setCheckoutAberto(false);
+    }
+
+
     return (
         <AnimatePresence>
             {aberta && (
                 <>
                     <motion.div
-                        className="fixed inset-0 bg-black/50 z-40 lg:hidden" // Esconde o overlay no desktop
+                        className="fixed inset-0 bg-black/50 z-40 lg:hidden"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={fecharSacola}
                     />
                     <motion.div
-                        className="fixed top-0 right-0 h-full w-[90%] sm:w-[400px] bg-white shadow-2xl z-50 flex flex-col lg:hidden" // Esconde o modal no desktop
+                        className="fixed top-0 right-0 h-full w-[90%] sm:w-[400px] bg-white shadow-2xl z-50 flex flex-col lg:hidden"
                         initial={{ x: "100%" }}
                         animate={{ x: 0 }}
                         exit={{ x: "100%" }}
@@ -76,13 +115,38 @@ export default function SacolaMobile() {
                                 >
                                     Limpar sacola
                                 </button>
-                                <button className="w-full bg-[#d4a574] hover:bg-[#c28e57] text-white font-semibold py-3 rounded-lg transition">
+                                <button
+                                    onClick={() => setCheckoutAberto(true)}
+                                    className="w-full bg-[#d4a574] hover:bg-[#c28e57] text-white font-semibold py-3 rounded-lg transition">
                                     Finalizar pedido
                                 </button>
                             </div>
                         )}
                     </motion.div>
                 </>
+            )}
+
+            {checkoutAberto && (
+                <CheckoutModal
+                    itens={itens}
+                    total={total}
+                    modoEntrega={modoEntrega}
+                    formaPagamento={formaPagamento}
+                    setModoEntrega={setModoEntrega}
+                    setFormaPagamento={setFormaPagamento}
+                    nome={nome}
+                    setNome={setNome}
+                    telefone={telefone}
+                    setTelefone={setTelefone}
+                    rua={rua}
+                    setRua={setRua}
+                    numero={numero}
+                    setNumero={setNumero}
+                    bairro={bairro}
+                    setBairro={setBairro}
+                    onFechar={() => setCheckoutAberto(false)}
+                    onConfirmar={confirmarPedido}
+                />
             )}
         </AnimatePresence>
     );
