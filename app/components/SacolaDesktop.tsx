@@ -22,7 +22,7 @@ export default function SacolaDesktop() {
 
     const total = itens.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
 
-    function confirmarPedido() {
+    async function confirmarPedido() {
         if (!nome.trim()) return alert("Informe seu nome.");
         if (!telefone.trim()) return alert("Informe seu telefone.");
 
@@ -49,12 +49,35 @@ export default function SacolaDesktop() {
             criadoEm: new Date().toISOString(),
         };
 
-        console.log("Pedido confirmado:", pedido);
-        window.alert("Pedido realizado!")
+        try {
+            const resposta = await fetch("http://localhost:3001/pedidos", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(pedido),
+            });
 
-        limparSacola();
-        setCheckoutAberto(false);
+            const dados = await resposta.json();
+
+            if (!resposta.ok) throw new Error(dados.erro || "Erro ao enviar pedido");
+
+            window.alert("Pedido enviado com sucesso!");
+
+            if (dados.codigoPix) {
+                console.log("Código PIX:", dados.codigoPix);
+                // Aqui você pode abrir um modal ou exibir na tela o QR code
+            }
+
+            limparSacola();
+            setCheckoutAberto(false);
+
+        } catch (erro) {
+            console.error(erro);
+            window.alert("Erro ao enviar pedido. Tente novamente.");
+        }
     }
+
 
 
 
