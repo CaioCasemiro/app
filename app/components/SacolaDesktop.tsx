@@ -3,6 +3,9 @@
 import { useSacola } from "../context/sacolaContext";
 import { useState } from "react";
 import CheckoutModal from "./CheckoutModal";
+import PixModal from "./pixModal";
+import SuccessModal from "./SuccessModal";
+
 
 
 export default function SacolaDesktop() {
@@ -18,6 +21,11 @@ export default function SacolaDesktop() {
     const [bairro, setBairro] = useState("");
     const [valorEntrega, setValorEntrega] = useState(0);
     const [pontoReferencia, setPontoReferencia] = useState("");
+    const [pixAberto, setPixAberto] = useState(false);
+    const [codigoPix, setCodigoPix] = useState<string | null>(null);
+    const [successAberto, setSuccessAberto] = useState(false);
+    const [successMessage, setSuccessMessage] = useState("");
+
 
 
     const total = itens.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
@@ -62,12 +70,15 @@ export default function SacolaDesktop() {
 
             if (!resposta.ok) throw new Error(dados.erro || "Erro ao enviar pedido");
 
-            window.alert("Pedido enviado com sucesso!");
-
             if (dados.codigoPix) {
-                console.log("Código PIX:", dados.codigoPix);
-                // Aqui você pode abrir um modal ou exibir na tela o QR code
+                setCodigoPix(dados.codigoPix);
+            } else {
+                setCodigoPix(null);
             }
+
+            // mostrar modal de sucesso
+            setSuccessMessage("Pedido enviado com sucesso!");
+            setSuccessAberto(true);
 
             limparSacola();
             setCheckoutAberto(false);
@@ -163,6 +174,24 @@ export default function SacolaDesktop() {
                     setPontoReferencia={setPontoReferencia}
                     valorEntrega={valorEntrega}
                     setValorEntrega={setValorEntrega}
+                />
+            )}
+
+            {successAberto && (
+                <SuccessModal
+                    message={successMessage}
+                    onClose={() => {
+                        setSuccessAberto(false);
+                        if (codigoPix) setPixAberto(true);
+                    }}
+                />
+            )}
+
+            {pixAberto && codigoPix && (
+                <PixModal
+                    key="pix-modal-desktop"
+                    codigoPix={codigoPix}
+                    onFechar={() => setPixAberto(false)}
                 />
             )}
         </div>

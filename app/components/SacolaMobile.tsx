@@ -1,9 +1,12 @@
 "use client";
 
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSacola } from "../context/sacolaContext";
-import { useState } from "react";
 import CheckoutModal from "./CheckoutModal";
+import PixModal from "./pixModal";
+import SuccessModal from "./SuccessModal";
+
 
 export default function SacolaMobile() {
     const { aberta, fecharSacola, itens, removerProduto, limparSacola } = useSacola();
@@ -18,6 +21,11 @@ export default function SacolaMobile() {
     const [bairro, setBairro] = useState("");
     const [valorEntrega, setValorEntrega] = useState(0);
     const [pontoReferencia, setPontoReferencia] = useState("");
+    const [pixAberto, setPixAberto] = useState(false);
+    const [codigoPix, setCodigoPix] = useState<string | null>(null);
+    const [successAberto, setSuccessAberto] = useState(false);
+    const [successMessage, setSuccessMessage] = useState("");
+
 
 
     const total = itens.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
@@ -51,7 +59,7 @@ export default function SacolaMobile() {
             criadoEm: new Date().toISOString(),
         };
 
-        try{
+        try {
             const resposta = await fetch("http://localhost:3001/pedidos", {
                 method: "POST",
                 headers: {
@@ -62,17 +70,22 @@ export default function SacolaMobile() {
 
             const dados = await resposta.json()
 
-            if(!resposta.ok) throw new Error(dados.erro || "Erro ao enviar pedido");
-            
-            window.alert("Pedido enviado com sucesso!")
+            if (!resposta.ok) throw new Error(dados.erro || "Erro ao enviar pedido");
 
-            if(dados.codigoPix){
-                console.log("Código pix: ", dados.codigoPix)
+
+            if (dados.codigoPix) {
+                setCodigoPix(dados.codigoPix);
+            } else {
+                setCodigoPix(null);
             }
+
+            setSuccessMessage("Pedido enviado com sucesso!");
+            setSuccessAberto(true);
+
             limparSacola();
             setCheckoutAberto(false);
 
-        } catch(erro){
+        } catch (erro) {
             console.error(erro)
             window.alert("Erro ao enviar pedido. Tente novamente.")
         }
@@ -83,7 +96,7 @@ export default function SacolaMobile() {
     return (
         <AnimatePresence>
             {aberta && (
-                <>
+                <React.Fragment key="sacola">
                     <motion.div
                         key="sacola-overlay"
                         className="fixed inset-0 bg-black/50 z-40 lg:hidden"
@@ -156,8 +169,9 @@ export default function SacolaMobile() {
                                 </button>
                             </div>
                         )}
+
                     </motion.div>
-                </>
+                </React.Fragment>
             )}
 
             {checkoutAberto && (
@@ -185,6 +199,25 @@ export default function SacolaMobile() {
                     setPontoReferencia={setPontoReferencia}
                     valorEntrega={valorEntrega}
                     setValorEntrega={setValorEntrega}
+                />
+            )}
+
+            {successAberto && (
+                <SuccessModal
+                    message={successMessage}
+                    onClose={() => {
+                        setSuccessAberto(false);
+                        // abrir PixModal apenas depois que o success fechar
+                        if (codigoPix) setPixAberto(true);
+                    }}
+                />
+            )}
+
+            {pixAberto && codigoPix && (
+                <PixModal
+                    key="pix-modal"
+                    codigoPix={codigoPix}
+                    onFechar={() => setPixAberto(false)}
                 />
             )}
         </AnimatePresence>
