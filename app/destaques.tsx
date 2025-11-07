@@ -56,7 +56,7 @@ export default function Destaques() {
                 </Swiper>
             </div>
 
-            <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+            <div className="hidden md:grid md:grid-cols-2 xl:grid-cols-3 gap-6 mt-6">
                 {produtos.map((produto) => (
                     <div
                         key={produto.id}

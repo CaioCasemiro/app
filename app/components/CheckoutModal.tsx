@@ -4,11 +4,19 @@ import { useEffect } from "react";
 import type { ItemSacola } from "../context/sacolaContext";
 
 const bairrosDisponiveis = [
-    { nome: "Cohab", taxa: 5 },
-    { nome: "Paraibinha", taxa: 8 },
-    { nome: "Junco", taxa: 10 },
-    { nome: "Pedrinhas", taxa: 12 },
+    { nome: "Morrinhos", taxa: 0 },
+    { nome: "Paraibinha", taxa: 3 },
+    { nome: "Bugi dos Almondes", taxa: 3 },
+    { nome: "Valparaiso", taxa: 3 },
+    { nome: "Malhada Grande", taxa: 3 },
+    { nome: "Cohab", taxa: 3 },
+    { nome: "Pantanal", taxa: 3 },
+    { nome: "Junco", taxa: 5 },
+    { nome: "Pedrinhas", taxa: 5 },
+    { nome: "Samambaia", taxa: 5 },
+    { nome: "Parque da Exposição", taxa: 5 },
 ];
+
 
 interface CheckoutModalProps {
     itens: ItemSacola[];
