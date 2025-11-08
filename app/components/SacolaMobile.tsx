@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSacola } from "../context/sacolaContext";
 import CheckoutModal from "./CheckoutModal";
@@ -13,6 +13,7 @@ export default function SacolaMobile() {
     const [checkoutAberto, setCheckoutAberto] = useState(false);
     const [modoEntrega, setModoEntrega] = useState<"delivery" | "retirada">("delivery");
     const [formaPagamento, setFormaPagamento] = useState<"pix" | "dinheiro">("pix");
+
     const [nome, setNome] = useState("");
     const [telefone, setTelefone] = useState("");
     const [rua, setRua] = useState("");
@@ -20,65 +21,13 @@ export default function SacolaMobile() {
     const [bairro, setBairro] = useState("");
     const [valorEntrega, setValorEntrega] = useState(0);
     const [pontoReferencia, setPontoReferencia] = useState("");
+
     const [pixAberto, setPixAberto] = useState(false);
     const [codigoPix, setCodigoPix] = useState<string | null>(null);
     const [successAberto, setSuccessAberto] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
 
     const total = itens.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
-
-    useEffect(() => {
-        if (!aberta) return;
-
-        const scrollY = window.scrollY || document.documentElement.scrollTop;
-
-        const previous = {
-            position: document.body.style.position,
-            top: document.body.style.top,
-            left: document.body.style.left,
-            right: document.body.style.right,
-            overflow: document.body.style.overflow,
-            width: document.body.style.width,
-        };
-
-        document.body.style.position = "fixed";
-        document.body.style.top = `-${scrollY}px`;
-        document.body.style.left = "0";
-        document.body.style.right = "0";
-        document.body.style.width = "100%";
-        document.body.style.overflow = "hidden";
-
-        const touchHandler = (e: TouchEvent) => {
-            const target = e.target as HTMLElement | null;
-            if (!target || !target.closest(".sacola-mobile-content")) {
-                e.preventDefault();
-            }
-        };
-
-        const wheelHandler = (e: WheelEvent) => {
-            const target = e.target as HTMLElement | null;
-            if (!target || !target.closest(".sacola-mobile-content")) {
-                e.preventDefault();
-            }
-        };
-
-        document.addEventListener("touchmove", touchHandler, { passive: false });
-        document.addEventListener("wheel", wheelHandler, { passive: false, capture: true });
-
-        return () => {
-            document.removeEventListener("touchmove", touchHandler);
-            document.removeEventListener("wheel", wheelHandler, { passive: false, capture: true } as any);
-
-            document.body.style.position = previous.position || "";
-            document.body.style.top = previous.top || "";
-            document.body.style.left = previous.left || "";
-            document.body.style.right = previous.right || "";
-            document.body.style.overflow = previous.overflow || "";
-            document.body.style.width = previous.width || "";
-
-            window.scrollTo(0, scrollY);
-        };
-    }, [aberta]);
 
     async function confirmarPedido() {
         if (!nome.trim()) return alert("Informe seu nome.");
@@ -90,8 +39,7 @@ export default function SacolaMobile() {
             }
         }
 
-        const totalComEntrega =
-            modoEntrega === "delivery" ? total + valorEntrega : total;
+        const totalComEntrega = modoEntrega === "delivery" ? total + valorEntrega : total;
 
         const pedido = {
             itens,
@@ -110,9 +58,7 @@ export default function SacolaMobile() {
         try {
             const resposta = await fetch("https://doceria-backend.onrender.com/pedidos", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(pedido),
             });
 
@@ -128,7 +74,6 @@ export default function SacolaMobile() {
 
             setSuccessMessage("Pedido enviado com sucesso!");
             setSuccessAberto(true);
-
             limparSacola();
             setCheckoutAberto(false);
         } catch (erro) {
@@ -141,6 +86,7 @@ export default function SacolaMobile() {
         <AnimatePresence>
             {aberta && (
                 <React.Fragment key="sacola">
+                    {/* Fundo escuro */}
                     <motion.div
                         key="sacola-overlay"
                         className="fixed inset-0 bg-black/50 z-40 lg:hidden"
@@ -149,9 +95,11 @@ export default function SacolaMobile() {
                         exit={{ opacity: 0 }}
                         onClick={fecharSacola}
                     />
+
+                    {/* Painel da sacola */}
                     <motion.div
                         key="sacola-panel"
-                        className="sacola-mobile-content fixed top-0 right-0 h-full w-[90%] sm:w-[400px] bg-white shadow-2xl z-50 flex flex-col lg:hidden"
+                        className="fixed top-0 right-0 h-full w-[90%] sm:w-[400px] bg-white shadow-2xl z-50 flex flex-col lg:hidden"
                         initial={{ x: "100%" }}
                         animate={{ x: 0 }}
                         exit={{ x: "100%" }}
@@ -159,7 +107,10 @@ export default function SacolaMobile() {
                     >
                         <div className="p-5 border-b border-gray-200 flex justify-between items-center">
                             <h2 className="text-lg font-semibold font-[raleway]">Minha Sacola</h2>
-                            <button onClick={fecharSacola} className="text-gray-500 hover:text-black text-xl">
+                            <button
+                                onClick={fecharSacola}
+                                className="text-gray-500 hover:text-black text-xl"
+                            >
                                 ×
                             </button>
                         </div>
@@ -171,18 +122,23 @@ export default function SacolaMobile() {
                                 </p>
                             ) : (
                                 itens.map((item) => (
-                                    <div key={item.id} className="flex items-center gap-3 border-b border-gray-100 pb-3">
+                                    <div
+                                        key={item.id}
+                                        className="flex items-center gap-3 border-b border-gray-100 pb-3"
+                                    >
                                         <img
                                             src={item.img}
                                             alt={item.nome}
                                             className="w-16 h-16 object-cover rounded-lg"
                                         />
+
                                         <div className="flex-1">
                                             <p className="font-medium font-[inter]">{item.nome}</p>
                                             <p className="text-sm text-gray-500">
                                                 {item.quantidade}x R$ {item.preco.toFixed(2)}
                                             </p>
                                         </div>
+
                                         <button
                                             onClick={() => removerProduto(item.id)}
                                             className="text-red-500 hover:text-red-700 text-sm font-semibold"
@@ -198,14 +154,18 @@ export default function SacolaMobile() {
                             <div className="p-5 border-t border-gray-200 bg-white">
                                 <div className="flex justify-between mb-4">
                                     <span className="font-semibold font-[inter]">Total:</span>
-                                    <span className="font-semibold font-[inter]">R$ {total.toFixed(2)}</span>
+                                    <span className="font-semibold font-[inter]">
+                                        R$ {total.toFixed(2)}
+                                    </span>
                                 </div>
+
                                 <button
                                     onClick={limparSacola}
                                     className="w-full bg-gray-100 text-gray-700 font-medium py-2 rounded-lg mb-2 hover:bg-gray-200"
                                 >
                                     Limpar sacola
                                 </button>
+
                                 <button
                                     onClick={() => setCheckoutAberto(true)}
                                     className="w-full bg-[#d4a574] hover:bg-[#c28e57] text-white font-semibold py-3 rounded-lg transition"
@@ -246,18 +206,24 @@ export default function SacolaMobile() {
                 />
             )}
 
+
             {successAberto && (
                 <SuccessModal
                     message={successMessage}
                     onClose={() => {
                         setSuccessAberto(false);
+                        // abrir PixModal apenas depois que o success fechar
                         if (codigoPix) setPixAberto(true);
                     }}
                 />
             )}
 
             {pixAberto && codigoPix && (
-                <PixModal key="pix-modal" codigoPix={codigoPix} onFechar={() => setPixAberto(false)} />
+                <PixModal
+                    key="pix-modal"
+                    codigoPix={codigoPix}
+                    onFechar={() => setPixAberto(false)}
+                />
             )}
         </AnimatePresence>
     );

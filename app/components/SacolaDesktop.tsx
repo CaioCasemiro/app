@@ -58,7 +58,7 @@ export default function SacolaDesktop() {
         };
 
         try {
-            const resposta = await fetch("http://localhost:3001/pedidos", {
+            const resposta = await fetch("https://doceria-backend.onrender.com/pedidos", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
