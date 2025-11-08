@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSacola } from "../context/sacolaContext";
 import CheckoutModal from "./CheckoutModal";
 import PixModal from "./pixModal";
 import SuccessModal from "./SuccessModal";
-
 
 export default function SacolaMobile() {
     const { aberta, fecharSacola, itens, removerProduto, limparSacola } = useSacola();
@@ -26,11 +25,62 @@ export default function SacolaMobile() {
     const [successAberto, setSuccessAberto] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
 
-
-
     const total = itens.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
 
+    // 🔒 BLOQUEIO DE SCROLL QUANDO A SACOLA ESTIVER ABERTA
+    useEffect(() => {
+        if (!aberta) return;
 
+        const scrollY = window.scrollY || document.documentElement.scrollTop;
+
+        const previous = {
+            position: document.body.style.position,
+            top: document.body.style.top,
+            left: document.body.style.left,
+            right: document.body.style.right,
+            overflow: document.body.style.overflow,
+            width: document.body.style.width,
+        };
+
+        document.body.style.position = "fixed";
+        document.body.style.top = `-${scrollY}px`;
+        document.body.style.left = "0";
+        document.body.style.right = "0";
+        document.body.style.width = "100%";
+        document.body.style.overflow = "hidden";
+
+        const touchHandler = (e: TouchEvent) => {
+            const target = e.target as HTMLElement | null;
+            if (!target || !target.closest(".sacola-mobile-content")) {
+                e.preventDefault();
+            }
+        };
+
+        const wheelHandler = (e: WheelEvent) => {
+            const target = e.target as HTMLElement | null;
+            if (!target || !target.closest(".sacola-mobile-content")) {
+                e.preventDefault();
+            }
+        };
+
+        document.addEventListener("touchmove", touchHandler, { passive: false });
+        document.addEventListener("wheel", wheelHandler, { passive: false, capture: true });
+
+        return () => {
+            document.removeEventListener("touchmove", touchHandler);
+            document.removeEventListener("wheel", wheelHandler, { passive: false, capture: true } as any);
+
+            document.body.style.position = previous.position || "";
+            document.body.style.top = previous.top || "";
+            document.body.style.left = previous.left || "";
+            document.body.style.right = previous.right || "";
+            document.body.style.overflow = previous.overflow || "";
+            document.body.style.width = previous.width || "";
+
+            window.scrollTo(0, scrollY);
+        };
+    }, [aberta]);
+    // 🔒 fim do bloqueio
 
     async function confirmarPedido() {
         if (!nome.trim()) return alert("Informe seu nome.");
@@ -65,13 +115,12 @@ export default function SacolaMobile() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(pedido)
-            })
+                body: JSON.stringify(pedido),
+            });
 
-            const dados = await resposta.json()
+            const dados = await resposta.json();
 
             if (!resposta.ok) throw new Error(dados.erro || "Erro ao enviar pedido");
-
 
             if (dados.codigoPix) {
                 setCodigoPix(dados.codigoPix);
@@ -84,14 +133,11 @@ export default function SacolaMobile() {
 
             limparSacola();
             setCheckoutAberto(false);
-
         } catch (erro) {
-            console.error(erro)
-            window.alert("Erro ao enviar pedido. Tente novamente.")
+            console.error(erro);
+            window.alert("Erro ao enviar pedido. Tente novamente.");
         }
-
     }
-
 
     return (
         <AnimatePresence>
@@ -107,7 +153,7 @@ export default function SacolaMobile() {
                     />
                     <motion.div
                         key="sacola-panel"
-                        className="fixed top-0 right-0 h-full w-[90%] sm:w-[400px] bg-white shadow-2xl z-50 flex flex-col lg:hidden"
+                        className="sacola-mobile-content fixed top-0 right-0 h-full w-[90%] sm:w-[400px] bg-white shadow-2xl z-50 flex flex-col lg:hidden"
                         initial={{ x: "100%" }}
                         animate={{ x: 0 }}
                         exit={{ x: "100%" }}
@@ -164,12 +210,12 @@ export default function SacolaMobile() {
                                 </button>
                                 <button
                                     onClick={() => setCheckoutAberto(true)}
-                                    className="w-full bg-[#d4a574] hover:bg-[#c28e57] text-white font-semibold py-3 rounded-lg transition">
+                                    className="w-full bg-[#d4a574] hover:bg-[#c28e57] text-white font-semibold py-3 rounded-lg transition"
+                                >
                                     Finalizar pedido
                                 </button>
                             </div>
                         )}
-
                     </motion.div>
                 </React.Fragment>
             )}
@@ -207,18 +253,13 @@ export default function SacolaMobile() {
                     message={successMessage}
                     onClose={() => {
                         setSuccessAberto(false);
-                        // abrir PixModal apenas depois que o success fechar
                         if (codigoPix) setPixAberto(true);
                     }}
                 />
             )}
 
             {pixAberto && codigoPix && (
-                <PixModal
-                    key="pix-modal"
-                    codigoPix={codigoPix}
-                    onFechar={() => setPixAberto(false)}
-                />
+                <PixModal key="pix-modal" codigoPix={codigoPix} onFechar={() => setPixAberto(false)} />
             )}
         </AnimatePresence>
     );
