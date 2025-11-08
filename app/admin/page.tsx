@@ -22,7 +22,7 @@ export default function Admin() {
 
         try {
 
-            const resposta = await fetch("http://localhost:3001/admin/login", {
+            const resposta = await fetch("https://doceria-backend.onrender.com/admin/login", {
                 method: "POST",
                 headers:{
                     "Content-Type": "application/json",

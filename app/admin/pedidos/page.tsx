@@ -22,7 +22,7 @@ export default function Pedidos() {
             const token = localStorage.getItem("token");
             console.log(token)
             try {
-                const resposta = await fetch("http://localhost:3001/pedidos", {
+                const resposta = await fetch("https://doceria-backend.onrender.com/pedidos", {
                     headers: {
                         "Authorization": `Bearer ${token}`
                     }
@@ -44,7 +44,7 @@ export default function Pedidos() {
     const finalizarPedido = async (id: number) => {
         const token = localStorage.getItem("token");
         try {
-            const resposta = await fetch(`http://localhost:3001/pedidos/${id}/finalizar`, {
+            const resposta = await fetch(`https://doceria-backend.onrender.com/pedidos/${id}/finalizar`, {
                 method: "PATCH",
                 headers: {
                     "Authorization": `Bearer ${token}`

@@ -27,7 +27,6 @@ export default function SacolaMobile() {
 
     const total = itens.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
 
-    // 🔒 BLOQUEIO DE SCROLL QUANDO A SACOLA ESTIVER ABERTA
     useEffect(() => {
         if (!aberta) return;
 
@@ -80,7 +79,6 @@ export default function SacolaMobile() {
             window.scrollTo(0, scrollY);
         };
     }, [aberta]);
-    // 🔒 fim do bloqueio
 
     async function confirmarPedido() {
         if (!nome.trim()) return alert("Informe seu nome.");
@@ -110,7 +108,7 @@ export default function SacolaMobile() {
         };
 
         try {
-            const resposta = await fetch("http://localhost:3001/pedidos", {
+            const resposta = await fetch("https://doceria-backend.onrender.com/pedidos", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
