@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSacola } from "../context/sacolaContext";
 
@@ -19,61 +19,6 @@ interface ModalProdutoProps {
 export default function ModalProduto({ produto, onFechar }: ModalProdutoProps) {
     const [quantidade, setQuantidade] = useState(1);
     const { adicionarProduto } = useSacola();
-
-    // 🔒 BLOQUEIO DE SCROLL
-    useEffect(() => {
-        if (!produto) return;
-
-        const scrollY = window.scrollY || document.documentElement.scrollTop;
-
-        const previous = {
-            position: document.body.style.position,
-            top: document.body.style.top,
-            left: document.body.style.left,
-            right: document.body.style.right,
-            overflow: document.body.style.overflow,
-            width: document.body.style.width,
-        };
-
-        document.body.style.position = "fixed";
-        document.body.style.top = `-${scrollY}px`;
-        document.body.style.left = "0";
-        document.body.style.right = "0";
-        document.body.style.width = "100%";
-        document.body.style.overflow = "hidden";
-
-        const touchHandler = (e: TouchEvent) => {
-            const target = e.target as HTMLElement | null;
-            if (!target || !target.closest(".modal-produto-content")) {
-                e.preventDefault();
-            }
-        };
-
-        const wheelHandler = (e: WheelEvent) => {
-            const target = e.target as HTMLElement | null;
-            if (!target || !target.closest(".modal-produto-content")) {
-                e.preventDefault();
-            }
-        };
-
-        document.addEventListener("touchmove", touchHandler, { passive: false });
-        document.addEventListener("wheel", wheelHandler, { passive: false, capture: true });
-
-        return () => {
-            document.removeEventListener("touchmove", touchHandler);
-            document.removeEventListener("wheel", wheelHandler, { passive: false, capture: true } as any);
-
-            document.body.style.position = previous.position || "";
-            document.body.style.top = previous.top || "";
-            document.body.style.left = previous.left || "";
-            document.body.style.right = previous.right || "";
-            document.body.style.overflow = previous.overflow || "";
-            document.body.style.width = previous.width || "";
-
-            window.scrollTo(0, scrollY);
-        };
-    }, [produto]);
-    // 🔒 fim do bloqueio
 
     if (!produto) return null;
 
