@@ -7,10 +7,8 @@ export default function Pedidos() {
     const [pedidos, setPedidos] = useState<any[]>([]);
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState("");
-    const [logado, setLogado] = useState(false);
+    const [logado, setLogado] = useState<boolean | null>(null);
     const router = useRouter();
-
-    if (!logado) return null
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -21,10 +19,12 @@ export default function Pedidos() {
         setLogado(true);
 
         async function buscarPedidos() {
+            const token = localStorage.getItem("token");
+            console.log(token)
             try {
                 const resposta = await fetch("http://localhost:3001/pedidos", {
                     headers: {
-                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                        "Authorization": `Bearer ${token}`
                     }
                 });
                 if (!resposta.ok) throw new Error("Erro ao buscar pedidos");
@@ -39,13 +39,15 @@ export default function Pedidos() {
         }
 
         buscarPedidos();
-    }, []);
+    }, [router]);
 
     const finalizarPedido = async (id: number) => {
+        const token = localStorage.getItem("token");
         try {
             const resposta = await fetch(`http://localhost:3001/pedidos/${id}/finalizar`, {
-                method: "PATCH", headers: {
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                method: "PATCH",
+                headers: {
+                    "Authorization": `Bearer ${token}`
                 }
             });
             if (!resposta.ok) throw new Error("Erro ao finalizar pedido");
@@ -56,25 +58,22 @@ export default function Pedidos() {
         }
     };
 
+    if (logado === null) return <p className="text-center mt-10 text-lg">Verificando login...</p>;
     if (carregando) return <p className="text-center mt-10 text-lg">Carregando pedidos...</p>;
     if (erro) return <p className="text-center mt-10 text-red-600 text-lg">{erro}</p>;
 
+    // Filtra pedidos por categoria
     const pedidosRetirada = pedidos.filter(p => p.modoEntrega === "retirada" && !p.finalizado);
     const pedidosEntrega = pedidos.filter(p => p.modoEntrega === "delivery" && !p.finalizado);
     const pedidosFinalizados = pedidos.filter(p => p.finalizado);
 
     const renderPedidos = (lista: any[]) => lista.map(pedido => (
         <div key={pedido.id} className={`rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300
-        ${pedido.finalizado
-                ? "bg-green-300 text-gray-500 opacity-50"
-                : "bg-white shadow-md"
-            }`}>
+            ${pedido.finalizado ? "bg-green-300 text-gray-500 opacity-50" : "bg-white shadow-md"}`}>
             <div className="flex justify-between items-center mb-3">
                 <h2 className="font-semibold text-xl md:text-2xl text-gray-800">Cliente: {pedido.nome || "Não informado"}</h2>
                 <span className={`px-3 py-1 rounded-full text-sm font-medium ${pedido.finalizado ? "bg-gray-100 text-gray-800" :
-                    pedido.modoEntrega === "delivery" ? "bg-yellow-100 text-yellow-800" :
-                        "bg-green-100 text-green-800"
-                    }`}>
+                    pedido.modoEntrega === "delivery" ? "bg-yellow-100 text-yellow-800" : "bg-green-100 text-green-800"}`}>
                     {pedido.finalizado ? "Finalizado" : pedido.modoEntrega === "delivery" ? "Entrega" : "Retirada"}
                 </span>
             </div>
@@ -128,7 +127,6 @@ export default function Pedidos() {
                 <h2 className="text-2xl font-semibold mb-4 text-gray-800">Pedidos para Entrega</h2>
                 {pedidosEntrega.length === 0 ? <p>Nenhum pedido nesta categoria.</p> : <div className="space-y-4">{renderPedidos(pedidosEntrega)}</div>}
             </div>
-
 
             <div className="w-full max-w-3xl">
                 <h2 className="text-2xl font-semibold mb-4 text-gray-800">Pedidos Finalizados</h2>
