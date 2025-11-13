@@ -1,44 +1,92 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalProduto from "../components/modalProduto";
 
+interface Doce {
+    id: number;
+    nome: string;
+    preco: number;
+    imagem: string;
+    quantidadeDisponivel: number;
+    categoria?: string | null;
+}
 
 export default function Fatias() {
-    
-    const fatias = [
-        { id: 1, nome: "Fatias de doce de leite", preco: "R$ 8,00", img: "/doceDeLeite8.jpeg", quantidadeDisponivel: 10 },
-        { id: 2, nome: "Fatias de red velvet", preco: "R$ 8,00", img: "/redVelvet8.jpeg", quantidadeDisponivel: 10 },
-        { id: 3, nome: "Fatia de dois amores", preco: "R$ 8,00", img: "/doisAmores8.jpeg", quantidadeDisponivel: 10 },
-    ]
+    const [fatias, setFatias] = useState<Doce[]>([]);
+    const [carregando, setCarregando] = useState(true);
+    const [fatiaSelecionada, setFatiaSelecionada] = useState<any | null>(null);
 
-    const [fatiaSelecionada, setFatiaSelecionada] = useState<{
-        id: number;
-        nome: string;
-        preco: string;
-        img: string;
-        quantidadeDisponivel: number;
-    } | null>(null)
+    async function carregarFatias() {
+        try {
+            const resposta = await fetch("https://doceria-backend.onrender.com/admin/ajustes/estoque");
+            if (!resposta.ok) throw new Error("Erro ao carregar doces");
+
+            const dados: Doce[] = await resposta.json();
+
+            const filtrados = dados.filter(
+                (doce) =>
+                    doce.categoria &&
+                    doce.categoria.toLowerCase() === "fatia"
+            );
+
+            setFatias(filtrados);
+        } catch (erro) {
+            console.error("Erro ao buscar fatias:", erro);
+        } finally {
+            setCarregando(false);
+        }
+    }
+
+    useEffect(() => {
+        carregarFatias();
+    }, []);
+
+    if (carregando) {
+        return <p className="text-center mt-6 text-gray-700 font-[quicksand]">Carregando fatias...</p>;
+    }
 
     return (
         <>
+            {fatias.length === 0 ? (
+                <p className="text-center mt-6 text-gray-700 font-[quicksand]">
+                    Nenhuma fatia disponível no momento.
+                </p>
+            ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {fatias.map((fatia) => (
+                        <div
+                            key={fatia.id}
+                            onClick={() =>
+                                setFatiaSelecionada({
+                                    id: fatia.id,
+                                    nome: fatia.nome,
+                                    preco: `R$ ${fatia.preco.toFixed(2).replace(".", ",")}`,
+                                    img: fatia.imagem || "/placeholder.jpg",
+                                    quantidadeDisponivel: fatia.quantidadeDisponivel,
+                                })
+                            }
+                            className="flex items-center bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-transform cursor-pointer duration-300 hover:scale-[1.03] hover:bg-[#cfcfcfab]"
+                        >
+                            <img
+                                src={fatia.imagem || "/placeholder.jpg"}
+                                alt={fatia.nome}
+                                className="w-45 h-32 object-cover rounded-l-xl"
+                            />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {fatias.map((fatia) => (
-                    <div
-                        key={fatia.id}
-                        onClick={()=>setFatiaSelecionada(fatia)}
-                        className="flex items-center bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-transform duration-300 cursor-pointer hover:scale-[1.03] hover:bg-[#cfcfcfab]">
+                            <div className="flex flex-col justify-center px-4 py-2 w-full">
+                                <p className="font-semibold font-[quicksand] text-[#3e2723] text-lg">
+                                    {fatia.nome}
+                                </p>
 
-                        <img src={fatia.img} alt={fatia.nome} className='w-45 h-32 object-cover rounded-l-xl' />
-
-                        <div className="flex flex-col justify-center px-4 py-2 w-full">
-                            <p className='font-semibold font-[quicksand] text-[#3e2723]  text-lg'>{fatia.nome}</p>
-
-                            <p className='text-green-700 font-bold text-base mt-1'>{fatia.preco}</p>
+                                <p className="text-green-700 font-bold text-base mt-1">
+                                    R$ {fatia.preco.toFixed(2).replace(".", ",")}
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            )}
+
             {fatiaSelecionada && (
                 <ModalProduto
                     produto={fatiaSelecionada}
@@ -46,5 +94,5 @@ export default function Fatias() {
                 />
             )}
         </>
-    )
+    );
 }
