@@ -59,7 +59,7 @@ export default function Admin() {
                         alt="logo adocicada"
                         className="w-32 h-32 object-contain"
                     />
-                    <h1 className="text-2xl font-[raleway] font-semibold">Página do administrador</h1>
+                    <h1 className="text-2xl font-[raleway] text-center font-semibold">Página do administrador</h1>
                     <div className=" w-full h-[25vh] justify-between rounded-lg p-6 flex flex-col items-center gap-4">
                         <input
                             className="border rounded-lg border-black/50 shadow-md px-4 py-2.5 w-full max-w-md focus:outline-none focus:ring-2 focus:ring-[#d4a574]"

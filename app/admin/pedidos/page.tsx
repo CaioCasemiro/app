@@ -43,24 +43,42 @@ export default function Pedidos() {
 
     const finalizarPedido = async (id: number) => {
         const token = localStorage.getItem("token");
+        if (!token) {
+            alert("Token não encontrado. Faça login novamente.");
+            return;
+        }
+
         try {
             const resposta = await fetch(`https://doceria-backend.onrender.com/pedidos/${id}/finalizar`, {
                 method: "PATCH",
                 headers: {
-                    "Authorization": `Bearer ${token}`
-                }
+                    "Authorization": `Bearer ${token}`,
+                    "Accept": "application/json",
+                },
             });
-            if (!resposta.ok) throw new Error("Erro ao finalizar pedido");
+
+            const text = await resposta.text();
+            let data: any = null;
+            try { data = text ? JSON.parse(text) : null; } catch { data = { message: text }; }
+
+            if (!resposta.ok) {
+                console.error("Erro ao finalizar pedido:", resposta.status, data || text);
+                const msg = data?.erro || data?.message || text || `Status ${resposta.status}`;
+                alert(`Erro ao finalizar pedido: ${msg}`);
+                return;
+            }
+
             setPedidos(prev => prev.map(p => p.id === id ? { ...p, finalizado: true } : p));
-        } catch (e) {
-            console.error(e);
-            alert("Não foi possível finalizar o pedido.");
+        } catch (e: any) {
+            console.error("Erro de rede ao finalizar pedido:", e);
+            alert("Não foi possível finalizar o pedido. Veja o console para mais detalhes.");
         }
     };
 
     if (logado === null) return <p className="text-center mt-10 text-lg">Verificando login...</p>;
     if (carregando) return <p className="text-center mt-10 text-lg">Carregando pedidos...</p>;
-    if (erro) return <p className="text-center mt-10 text-red-600 text-lg">{erro}</p>;
+    if (erro) return <p className="text-center mt-10 text-red
+    -600 text-lg">{erro}</p>;
 
     // Filtra pedidos por categoria
     const pedidosRetirada = pedidos.filter(p => p.modoEntrega === "retirada" && !p.finalizado);
@@ -106,7 +124,7 @@ export default function Pedidos() {
             {!pedido.finalizado && (
                 <button
                     onClick={() => finalizarPedido(pedido.id)}
-                    className="mt-3 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                    className="mt-3 bg-blue-600 text-white px-4 py-2 rounded hover:cursor-pointer hover:bg-blue-700 transition"
                 >
                     Marcar como Finalizado
                 </button>
@@ -116,7 +134,15 @@ export default function Pedidos() {
 
     return (
         <div className="min-h-screen bg-[#E8CCAC] p-6 md:p-8 flex flex-col items-center space-y-10">
-            <h1 className="text-3xl md:text-4xl font-bold text-center">Dashboard de Pedidos</h1>
+            <div className="flex flex-row w-full justify-between items-center">
+            <h1 className="text-3xl md:text-4xl font-bold flex-1 text-center">Dashboard de Pedidos</h1>
+            <button 
+                onClick={() => router.push("/admin/pedidos/ajustes")}
+                className="bg-[#1900ff] hover:bg-[#877aff] hover:cursor-pointer text-white font-semibold px-4 py-2 rounded-lg transition"
+            >
+                Página de ajustes
+            </button>
+            </div>
 
             <div className="w-full max-w-3xl">
                 <h2 className="text-2xl font-semibold mb-4 text-gray-800">Pedidos para Retirada</h2>

@@ -1,4 +1,4 @@
-// /app/hooks/useHorario.ts
+
 "use client";
 
 import { useMemo } from "react";
