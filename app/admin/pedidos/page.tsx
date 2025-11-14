@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import useInatividadeAdmin from "@/hooks/useInatividadeAdmin";
+
 
 export default function Pedidos() {
     const [pedidos, setPedidos] = useState<any[]>([]);
@@ -9,6 +11,7 @@ export default function Pedidos() {
     const [erro, setErro] = useState("");
     const [logado, setLogado] = useState<boolean | null>(null);
     const router = useRouter();
+    useInatividadeAdmin(40);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -135,13 +138,13 @@ export default function Pedidos() {
     return (
         <div className="min-h-screen bg-[#E8CCAC] p-6 md:p-8 flex flex-col items-center space-y-10">
             <div className="flex flex-row w-full justify-between items-center">
-            <h1 className="text-3xl md:text-4xl font-bold flex-1 text-center">Dashboard de Pedidos</h1>
-            <button 
-                onClick={() => router.push("/admin/pedidos/ajustes")}
-                className="bg-[#1900ff] hover:bg-[#877aff] hover:cursor-pointer text-white font-semibold px-4 py-2 rounded-lg transition"
-            >
-                Página de ajustes
-            </button>
+                <h1 className="text-3xl md:text-4xl font-bold flex-1 text-center">Dashboard de Pedidos</h1>
+                <button
+                    onClick={() => router.push("/admin/pedidos/ajustes")}
+                    className="bg-[#1900ff] hover:bg-[#877aff] hover:cursor-pointer text-white font-semibold px-4 py-2 rounded-lg transition"
+                >
+                    Página de ajustes
+                </button>
             </div>
 
             <div className="w-full max-w-3xl">

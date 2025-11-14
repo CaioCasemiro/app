@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import useInatividadeAdmin from "@/hooks/useInatividadeAdmin";
+
 
 export default function Ajustes() {
   const [doces, setDoces] = useState<any[]>([]);
@@ -15,6 +17,8 @@ export default function Ajustes() {
   });
   const [carregando, setCarregando] = useState(false);
   const router = useRouter();
+  useInatividadeAdmin(40);
+
 
   async function carregarDoces() {
     try {
@@ -40,7 +44,6 @@ export default function Ajustes() {
     if (!novoDoce.nome.trim()) return;
     setCarregando(true);
     try {
-      // Verificar limite de destaques no front
       if (novoDoce.isDestaque) {
         const totalDestaques = doces.filter((d) => d.isDestaque).length;
         if (totalDestaques >= 5) {
@@ -86,7 +89,6 @@ export default function Ajustes() {
     if (!modoEdicao) return;
     setCarregando(true);
     try {
-      // Verificar limite de destaques
       if (modoEdicao.isDestaque) {
         const totalDestaques = doces.filter(
           (d) => d.isDestaque && d.id !== modoEdicao.id
@@ -167,7 +169,6 @@ export default function Ajustes() {
         </h1>
       </div>
 
-      {/* Formulário novo doce */}
       <form
         onSubmit={adicionarDoce}
         className="bg-white/80 border border-pink-200 shadow-md rounded-2xl p-6 mb-10 max-w-3xl mx-auto"
