@@ -66,7 +66,7 @@ export default function Home() {
           </section>
 
           <section className='px-4 md:px-1 mx-auto'>
-            <h3 className='text-xl font-[inter] ml-12 lg:ml-17 font-bold'>Categorias</h3>
+            <h3 className='text-xl font-[inter] ml-12 lg:ml-25 font-bold'>Categorias</h3>
             <Categorias />
           </section>
 
