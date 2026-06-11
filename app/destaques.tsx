@@ -88,7 +88,7 @@ export default function Destaques() {
                                     {produto.nome}
                                 </p>
                                 <p className="text-green-700 font-bold text-sm mt-1">
-                                    R$ {produto.preco}
+                                    R$ {Number(produto.preco).toFixed(2).replace(".", ",")}
                                 </p>
                             </div>
                         </SwiperSlide>

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, number } from "framer-motion";
 import { useSacola } from "../context/sacolaContext";
 
 interface Produto {
@@ -22,8 +22,8 @@ export default function ModalProduto({ produto, onFechar }: ModalProdutoProps) {
 
     if (!produto) return null;
 
-    const precoNumerico = parseFloat(
-        produto.preco.replace("R$", "").replace(",", ".").trim()
+    const precoNumerico = Number(
+        produto.preco
     );
 
     const precoTotal = precoNumerico * quantidade;
