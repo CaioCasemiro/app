@@ -7,7 +7,7 @@ interface Produto {
     id: number;
     nome: string;
     preco: string;
-    img: string;
+    imagem: string;
     quantidadeDisponivel: number;
 }
 
@@ -33,7 +33,7 @@ export default function ModalProduto({ produto, onFechar }: ModalProdutoProps) {
             id: produto.id,
             nome: produto.nome,
             preco: precoNumerico,
-            img: produto.img,
+            img: produto.imagem,
             quantidade,
         });
         onFechar();
@@ -65,7 +65,7 @@ export default function ModalProduto({ produto, onFechar }: ModalProdutoProps) {
                         </button>
 
                         <img
-                            src={produto.img}
+                            src={produto.imagem}
                             alt={produto.nome}
                             className="w-full h-95 object-cover rounded-lg mb-4"
                         />
