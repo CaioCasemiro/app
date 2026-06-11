@@ -61,7 +61,7 @@ export default function BolosNoPote() {
                                     id: bolo.id,
                                     nome: bolo.nome,
                                     preco: `R$ ${bolo.preco.toFixed(2).replace(".", ",")}`,
-                                    img: bolo.imagem || "/placeholder.jpg",
+                                    imagem: bolo.imagem || "/placeholder.jpg",
                                     quantidadeDisponivel: bolo.quantidadeDisponivel,
                                 })
                             }

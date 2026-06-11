@@ -61,7 +61,7 @@ export default function Bombons() {
                                     id: bombom.id,
                                     nome: bombom.nome,
                                     preco: `R$ ${bombom.preco.toFixed(2).replace(".", ",")}`,
-                                    img: bombom.imagem || "/placeholder.jpg",
+                                    imagem: bombom.imagem || "/placeholder.jpg",
                                     quantidadeDisponivel: bombom.quantidadeDisponivel,
                                 })
                             }

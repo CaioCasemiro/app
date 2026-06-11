@@ -61,7 +61,7 @@ export default function Escondidinho() {
                                     id: escondidinho.id,
                                     nome: escondidinho.nome,
                                     preco: `R$ ${escondidinho.preco.toFixed(2).replace(".", ",")}`,
-                                    img: escondidinho.imagem || "/placeholder.jpg",
+                                    imagem: escondidinho.imagem || "/placeholder.jpg",
                                     quantidadeDisponivel: escondidinho.quantidadeDisponivel,
                                 })
                             }

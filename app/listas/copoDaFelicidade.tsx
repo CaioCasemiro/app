@@ -61,7 +61,7 @@ export default function CopoDaFelicidade() {
                                     id: copo.id,
                                     nome: copo.nome,
                                     preco: `R$ ${copo.preco.toFixed(2).replace(".", ",")}`,
-                                    img: copo.imagem || "/placeholder.jpg",
+                                    imagem: copo.imagem || "/placeholder.jpg",
                                     quantidadeDisponivel: copo.quantidadeDisponivel,
                                 })
                             }

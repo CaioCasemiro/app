@@ -61,7 +61,7 @@ export default function Fatias() {
                                     id: fatia.id,
                                     nome: fatia.nome,
                                     preco: `R$ ${fatia.preco.toFixed(2).replace(".", ",")}`,
-                                    img: fatia.imagem || "/placeholder.jpg",
+                                    imagem: fatia.imagem || "/placeholder.jpg",
                                     quantidadeDisponivel: fatia.quantidadeDisponivel,
                                 })
                             }
