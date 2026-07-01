@@ -53,37 +53,58 @@ export default function Fatias() {
                 </p>
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    {fatias.map((fatia) => (
-                        <div
-                            key={fatia.id}
-                            onClick={() =>
-                                setFatiaSelecionada({
-                                    id: fatia.id,
-                                    nome: fatia.nome,
-                                    preco: `R$ ${fatia.preco.toFixed(2).replace(".", ",")}`,
-                                    imagem: fatia.imagem || "/placeholder.jpg",
-                                    quantidadeDisponivel: fatia.quantidadeDisponivel,
-                                })
-                            }
-                            className="flex items-center bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-transform cursor-pointer duration-300 hover:scale-[1.03] hover:bg-[#cfcfcfab]"
-                        >
-                            <img
-                                src={fatia.imagem || "/placeholder.jpg"}
-                                alt={fatia.nome}
-                                className="w-45 h-32 object-cover rounded-l-xl"
-                            />
+                    {fatias.map((fatia) => {
+                        const estaIndisponivel = fatia.quantidadeDisponivel <= 0;
 
-                            <div className="flex flex-col justify-center px-4 py-2 w-full">
-                                <p className="font-semibold font-[quicksand] text-[#3e2723] text-lg">
-                                    {fatia.nome}
-                                </p>
+                        return (
+                            <div
+                                key={fatia.id}
+                                onClick={() => {
+                                    if (!estaIndisponivel) {
+                                        setFatiaSelecionada({
+                                            id: fatia.id,
+                                            nome: fatia.nome,
+                                            preco: `R$ ${fatia.preco.toFixed(2).replace(".", ",")}`,
+                                            imagem: fatia.imagem || "/placeholder.jpg",
+                                            quantidadeDisponivel: fatia.quantidadeDisponivel,
+                                        });
+                                    }
+                                }}
+                                className={`relative flex items-center bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 ${
+                                    estaIndisponivel
+                                        ? "opacity-50 cursor-not-allowed"
+                                        : "hover:shadow-lg hover:scale-[1.03] hover:bg-[#cfcfcfab] cursor-pointer"
+                                }`}
+                            >
+                                {/* Overlay para indisponíveis */}
+                                {estaIndisponivel && (
+                                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/70 backdrop-blur-[1px]">
+                                        <p className="px-3 py-1 rounded-full bg-white/90 text-[#3e2723] text-xs sm:text-sm font-bold shadow-lg uppercase tracking-wide">
+                                            Indisponível
+                                        </p>
+                                    </div>
+                                )}
 
-                                <p className="text-green-700 font-bold text-base mt-1">
-                                    R$ {fatia.preco.toFixed(2).replace(".", ",")}
-                                </p>
+                                <img
+                                    src={fatia.imagem || "/placeholder.jpg"}
+                                    alt={fatia.nome}
+                                    className={`w-45 h-32 object-cover rounded-l-xl transition-all duration-300 ${
+                                        estaIndisponivel ? "blur-[2px] grayscale" : ""
+                                    }`}
+                                />
+
+                                <div className="flex flex-col justify-center px-3 sm:px-4 py-2 w-full">
+                                    <p className="font-semibold font-[quicksand] text-[#3e2723] text-sm sm:text-lg line-clamp-2">
+                                        {fatia.nome}
+                                    </p>
+
+                                    <p className="text-green-700 font-bold text-xs sm:text-base mt-1">
+                                        R$ {fatia.preco.toFixed(2).replace(".", ",")}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             )}
 

@@ -53,37 +53,58 @@ export default function CopoDaFelicidade() {
                 </p>
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    {copos.map((copo) => (
-                        <div
-                            key={copo.id}
-                            onClick={() =>
-                                setCopoSelecionado({
-                                    id: copo.id,
-                                    nome: copo.nome,
-                                    preco: `R$ ${copo.preco.toFixed(2).replace(".", ",")}`,
-                                    imagem: copo.imagem || "/placeholder.jpg",
-                                    quantidadeDisponivel: copo.quantidadeDisponivel,
-                                })
-                            }
-                            className="flex items-center bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-transform cursor-pointer duration-300 hover:scale-[1.03] hover:bg-[#cfcfcfab]"
-                        >
-                            <img
-                                src={copo.imagem || "/placeholder.jpg"}
-                                alt={copo.nome}
-                                className="w-45 h-32 object-cover rounded-l-xl"
-                            />
+                    {copos.map((copo) => {
+                        const estaIndisponivel = copo.quantidadeDisponivel <= 0;
 
-                            <div className="flex flex-col justify-center px-4 py-2 w-full">
-                                <p className="font-semibold font-[quicksand] text-[#3e2723] text-lg">
-                                    {copo.nome}
-                                </p>
+                        return (
+                            <div
+                                key={copo.id}
+                                onClick={() => {
+                                    if (!estaIndisponivel) {
+                                        setCopoSelecionado({
+                                            id: copo.id,
+                                            nome: copo.nome,
+                                            preco: `R$ ${copo.preco.toFixed(2).replace(".", ",")}`,
+                                            imagem: copo.imagem || "/placeholder.jpg",
+                                            quantidadeDisponivel: copo.quantidadeDisponivel,
+                                        });
+                                    }
+                                }}
+                                className={`relative flex items-center bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 ${
+                                    estaIndisponivel
+                                        ? "opacity-50 cursor-not-allowed"
+                                        : "hover:shadow-lg hover:scale-[1.03] hover:bg-[#cfcfcfab] cursor-pointer"
+                                }`}
+                            >
+                                {/* Overlay para indisponíveis */}
+                                {estaIndisponivel && (
+                                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/70 backdrop-blur-[1px]">
+                                        <p className="px-3 py-1 rounded-full bg-white/90 text-[#3e2723] text-xs sm:text-sm font-bold shadow-lg uppercase tracking-wide">
+                                            Indisponível
+                                        </p>
+                                    </div>
+                                )}
 
-                                <p className="text-green-700 font-bold text-base mt-1">
-                                    R$ {copo.preco.toFixed(2).replace(".", ",")}
-                                </p>
+                                <img
+                                    src={copo.imagem || "/placeholder.jpg"}
+                                    alt={copo.nome}
+                                    className={`w-45 h-32 object-cover rounded-l-xl transition-all duration-300 ${
+                                        estaIndisponivel ? "blur-[2px] grayscale" : ""
+                                    }`}
+                                />
+
+                                <div className="flex flex-col justify-center px-3 sm:px-4 py-2 w-full">
+                                    <p className="font-semibold font-[quicksand] text-[#3e2723] text-sm sm:text-lg line-clamp-2">
+                                        {copo.nome}
+                                    </p>
+
+                                    <p className="text-green-700 font-bold text-xs sm:text-base mt-1">
+                                        R$ {copo.preco.toFixed(2).replace(".", ",")}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             )}
 

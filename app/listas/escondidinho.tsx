@@ -53,37 +53,58 @@ export default function Escondidinho() {
                 </p>
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    {escondidinhos.map((escondidinho) => (
-                        <div
-                            key={escondidinho.id}
-                            onClick={() =>
-                                setEscondidinhoSelecionado({
-                                    id: escondidinho.id,
-                                    nome: escondidinho.nome,
-                                    preco: `R$ ${escondidinho.preco.toFixed(2).replace(".", ",")}`,
-                                    imagem: escondidinho.imagem || "/placeholder.jpg",
-                                    quantidadeDisponivel: escondidinho.quantidadeDisponivel,
-                                })
-                            }
-                            className="flex items-center bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-transform cursor-pointer duration-300 hover:scale-[1.03] hover:bg-[#cfcfcfab]"
-                        >
-                            <img
-                                src={escondidinho.imagem || "/placeholder.jpg"}
-                                alt={escondidinho.nome}
-                                className="w-45 h-32 object-cover rounded-l-xl"
-                            />
+                    {escondidinhos.map((escondidinho) => {
+                        const estaIndisponivel = escondidinho.quantidadeDisponivel <= 0;
 
-                            <div className="flex flex-col justify-center px-4 py-2 w-full">
-                                <p className="font-semibold font-[quicksand] text-[#3e2723] text-lg">
-                                    {escondidinho.nome}
-                                </p>
+                        return (
+                            <div
+                                key={escondidinho.id}
+                                onClick={() => {
+                                    if (!estaIndisponivel) {
+                                        setEscondidinhoSelecionado({
+                                            id: escondidinho.id,
+                                            nome: escondidinho.nome,
+                                            preco: `R$ ${escondidinho.preco.toFixed(2).replace(".", ",")}`,
+                                            imagem: escondidinho.imagem || "/placeholder.jpg",
+                                            quantidadeDisponivel: escondidinho.quantidadeDisponivel,
+                                        });
+                                    }
+                                }}
+                                className={`relative flex items-center bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 ${
+                                    estaIndisponivel
+                                        ? "opacity-50 cursor-not-allowed"
+                                        : "hover:shadow-lg hover:scale-[1.03] hover:bg-[#cfcfcfab] cursor-pointer"
+                                }`}
+                            >
+                                {/* Overlay para indisponíveis */}
+                                {estaIndisponivel && (
+                                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/70 backdrop-blur-[1px]">
+                                        <p className="px-3 py-1 rounded-full bg-white/90 text-[#3e2723] text-xs sm:text-sm font-bold shadow-lg uppercase tracking-wide">
+                                            Indisponível
+                                        </p>
+                                    </div>
+                                )}
 
-                                <p className="text-green-700 font-bold text-base mt-1">
-                                    R$ {escondidinho.preco.toFixed(2).replace(".", ",")}
-                                </p>
+                                <img
+                                    src={escondidinho.imagem || "/placeholder.jpg"}
+                                    alt={escondidinho.nome}
+                                    className={`w-45 h-32 object-cover rounded-l-xl transition-all duration-300 ${
+                                        estaIndisponivel ? "blur-[2px] grayscale" : ""
+                                    }`}
+                                />
+
+                                <div className="flex flex-col justify-center px-3 sm:px-4 py-2 w-full">
+                                    <p className="font-semibold font-[quicksand] text-[#3e2723] text-sm sm:text-lg line-clamp-2">
+                                        {escondidinho.nome}
+                                    </p>
+
+                                    <p className="text-green-700 font-bold text-xs sm:text-base mt-1">
+                                        R$ {escondidinho.preco.toFixed(2).replace(".", ",")}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             )}
 

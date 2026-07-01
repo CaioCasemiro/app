@@ -27,7 +27,17 @@ export default function Destaques() {
             }
 
             const dados = await resposta.json();
-            const somenteDestaques = dados.filter((p: any) => p.isDestaque === true);
+            const listaProdutos = Array.isArray(dados)
+                ? dados
+                : Array.isArray(dados?.estoque)
+                    ? dados.estoque
+                    : Array.isArray(dados?.produtos)
+                        ? dados.produtos
+                        : [];
+
+            const somenteDestaques = listaProdutos.filter(
+                (p: any) => p?.isDestaque === true
+            );
 
             setProdutosDestaque(somenteDestaques);
 
@@ -72,52 +82,98 @@ export default function Destaques() {
                     centeredSlides={false}
                     className="px-4 overflow-visible"
                 >
-                    {produtosDestaque.map((produto) => (
-                        <SwiperSlide
-                            key={produto.id}
-                            onClick={() => setProdutoSelecionado(produto)}
-                            className="flex! flex-row! items-center bg-white rounded-xl shadow-md overflow-visible hover:shadow-lg transition-transform cursor-pointer duration-300 hover:scale-[1.03] hover:bg-[#cfcfcfab] h-32"
-                        >
-                            <img
-                                src={produto.imagem}
-                                alt={produto.nome}
-                                className="flex-none w-20 h-28 object-cover rounded-l-xl"
-                            />
-                            <div className="flex flex-col justify-center px-3 py-2 flex-1">
-                                <p className="font-semibold font-[quicksand] text-[#3e2723] text-sm leading-tight line-clamp-3">
-                                    {produto.nome}
-                                </p>
-                                <p className="text-green-700 font-bold text-sm mt-1">
-                                    R$ {Number(produto.preco).toFixed(2).replace(".", ",")}
-                                </p>
-                            </div>
-                        </SwiperSlide>
-                    ))}
+                    {produtosDestaque.map((produto) => {
+                        const estaIndisponivel = produto.quantidadeDisponivel <= 0;
+
+                        return (
+                            <SwiperSlide
+                                key={produto.id}
+                                onClick={() => {
+                                    if (!estaIndisponivel) {
+                                        setProdutoSelecionado(produto);
+                                    }
+                                }}
+                                className={`flex! flex-row! items-center bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 h-32 relative ${
+                                    estaIndisponivel
+                                        ? "opacity-50 cursor-not-allowed"
+                                        : "hover:shadow-lg hover:scale-[1.03] hover:bg-[#cfcfcfab] cursor-pointer"
+                                }`}
+                            >
+                                {/* Overlay para indisponíveis */}
+                                {estaIndisponivel && (
+                                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/70 backdrop-blur-[1px]">
+                                        <p className="px-2 py-1 rounded-full bg-white/90 text-[#3e2723] text-[10px] sm:text-xs font-bold shadow-lg uppercase tracking-wide">
+                                            Indisponível
+                                        </p>
+                                    </div>
+                                )}
+
+                                <img
+                                    src={produto.imagem}
+                                    alt={produto.nome}
+                                    className={`flex-none w-20 h-28 object-cover rounded-l-xl transition-all duration-300 ${
+                                        estaIndisponivel ? "blur-[2px] grayscale" : ""
+                                    }`}
+                                />
+                                <div className="flex flex-col justify-center px-2 sm:px-3 py-2 flex-1">
+                                    <p className="font-semibold font-[quicksand] text-[#3e2723] text-xs sm:text-sm leading-tight line-clamp-2">
+                                        {produto.nome}
+                                    </p>
+                                    <p className="text-green-700 font-bold text-xs mt-1">
+                                        R$ {Number(produto.preco).toFixed(2).replace(".", ",")}
+                                    </p>
+                                </div>
+                            </SwiperSlide>
+                        );
+                    })}
                 </Swiper>
             </div>
 
             <div className="hidden md:grid md:grid-cols-2 xl:grid-cols-3 gap-6 mt-6">
-                {produtosDestaque.map((produto) => (
-                    <div
-                        key={produto.id}
-                        onClick={() => setProdutoSelecionado(produto)}
-                        className="flex items-center bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-transform cursor-pointer duration-300 hover:scale-[1.03] hover:bg-[#cfcfcfab] h-32"
-                    >
-                        <img
-                            src={produto.imagem}
-                            alt={produto.nome}
-                            className="w-44 h-32 object-cover rounded-l-xl"
-                        />
-                        <div className="flex flex-col justify-center px-4 py-2 w-full">
-                            <p className="font-semibold font-[quicksand] text-[#3e2723] text-lg">
-                                {produto.nome}
-                            </p>
-                            <p className="text-green-700 font-bold text-base mt-1">
-                                R$ {produto.preco}
-                            </p>
+                {produtosDestaque.map((produto) => {
+                    const estaIndisponivel = produto.quantidadeDisponivel <= 0;
+
+                    return (
+                        <div
+                            key={produto.id}
+                            onClick={() => {
+                                if (!estaIndisponivel) {
+                                    setProdutoSelecionado(produto);
+                                }
+                            }}
+                            className={`relative flex items-center bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 h-32 ${
+                                estaIndisponivel
+                                    ? "opacity-50 cursor-not-allowed"
+                                    : "hover:shadow-lg hover:scale-[1.03] hover:bg-[#cfcfcfab] cursor-pointer"
+                            }`}
+                        >
+                            {/* Overlay para indisponíveis */}
+                            {estaIndisponivel && (
+                                <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/70 backdrop-blur-[1px]">
+                                    <p className="px-3 py-1 rounded-full bg-white/90 text-[#3e2723] text-sm font-bold shadow-lg uppercase tracking-wide">
+                                        Indisponível
+                                    </p>
+                                </div>
+                            )}
+
+                            <img
+                                src={produto.imagem}
+                                alt={produto.nome}
+                                className={`w-44 h-32 object-cover rounded-l-xl transition-all duration-300 ${
+                                    estaIndisponivel ? "blur-[2px] grayscale" : ""
+                                }`}
+                            />
+                            <div className="flex flex-col justify-center px-4 py-2 w-full">
+                                <p className="font-semibold font-[quicksand] text-[#3e2723] text-lg">
+                                    {produto.nome}
+                                </p>
+                                <p className="text-green-700 font-bold text-base mt-1">
+                                    R$ {produto.preco}
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
 
             {produtoSelecionado && (

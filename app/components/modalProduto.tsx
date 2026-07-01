@@ -22,6 +22,9 @@ export default function ModalProduto({ produto, onFechar }: ModalProdutoProps) {
 
     if (!produto) return null;
 
+    // Verifica se o produto está indisponível
+    const estaIndisponivel = produto.quantidadeDisponivel <= 0;
+
     const precoNumerico = typeof produto.preco === 'string'
         ? Number(produto.preco.replace("R$", "").replace(",", ".").trim())
         : Number(produto.preco);
@@ -29,6 +32,9 @@ export default function ModalProduto({ produto, onFechar }: ModalProdutoProps) {
     const precoTotal = precoNumerico * quantidade;
 
     const adicionarNaSacola = () => {
+        // Bloqueia adição se indisponível
+        if (estaIndisponivel) return;
+
         adicionarProduto({
             id: produto.id,
             nome: produto.nome,
@@ -67,51 +73,74 @@ export default function ModalProduto({ produto, onFechar }: ModalProdutoProps) {
                         <img
                             src={produto.imagem}
                             alt={produto.nome}
-                            className="w-full h-95 object-cover rounded-lg mb-4"
+                            className={`w-full h-95 object-cover rounded-lg mb-4 ${
+                                estaIndisponivel ? "blur-sm opacity-60" : ""
+                            }`}
                         />
 
                         <h2 className="text-xl font-[inter] font-semibold mb-2">
                             {produto.nome}
                         </h2>
 
-                        <p className="text-sm text-gray-500 mb-3">
-                            Quantidade disponível: {produto.quantidadeDisponivel}
+                        <p className={`text-sm mb-3 ${
+                            estaIndisponivel
+                                ? "text-red-600 font-semibold"
+                                : "text-gray-500"
+                        }`}>
+                            {estaIndisponivel
+                                ? "❌ Produto indisponível no momento"
+                                : `Quantidade disponível: ${produto.quantidadeDisponivel}`
+                            }
                         </p>
 
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center gap-3.5">
+                        {!estaIndisponivel && (
+                            <>
+                                <div className="flex items-center justify-between mb-4">
+                                    <div className="flex items-center gap-3.5">
+                                        <button
+                                            onClick={() => setQuantidade((q) => Math.max(1, q - 1))}
+                                            className="bg-gray-200 px-3 py-1 rounded-lg text-lg"
+                                        >
+                                            -
+                                        </button>
+
+                                        <span className="text-lg font-medium">{quantidade}</span>
+
+                                        <button
+                                            onClick={() =>
+                                                setQuantidade((q) =>
+                                                    Math.min(produto.quantidadeDisponivel, q + 1)
+                                                )
+                                            }
+                                            className="bg-gray-200 px-3 py-1 rounded-lg text-lg"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+
+                                    <p className="text-lg font-bold text-[#6b3e26]">
+                                        R$ {precoTotal.toFixed(2)}
+                                    </p>
+                                </div>
+
                                 <button
-                                    onClick={() => setQuantidade((q) => Math.max(1, q - 1))}
-                                    className="bg-gray-200 px-3 py-1 rounded-lg text-lg"
+                                    onClick={adicionarNaSacola}
+                                    className="bg-[#d4a574] hover:bg-[#c28e57] text-white font-semibold py-3 rounded-xl w-full transition"
                                 >
-                                    -
+                                    Adicionar à sacola - R$ {precoTotal.toFixed(2)}
                                 </button>
+                            </>
+                        )}
 
-                                <span className="text-lg font-medium">{quantidade}</span>
-
-                                <button
-                                    onClick={() =>
-                                        setQuantidade((q) =>
-                                            Math.min(produto.quantidadeDisponivel, q + 1)
-                                        )
-                                    }
-                                    className="bg-gray-200 px-3 py-1 rounded-lg text-lg"
-                                >
-                                    +
-                                </button>
-                            </div>
-
-                            <p className="text-lg font-bold text-[#6b3e26]">
-                                R$ {precoTotal.toFixed(2)}
-                            </p>
-                        </div>
-
-                        <button
-                            onClick={adicionarNaSacola}
-                            className="bg-[#d4a574] hover:bg-[#c28e57] text-white font-semibold py-3 rounded-xl w-full transition"
-                        >
-                            Adicionar à sacola - R$ {precoTotal.toFixed(2)}
-                        </button>
+                        {estaIndisponivel && (
+                            <button
+                                onClick={onFechar}
+                                className="bg-gray-400 text-black font-semibold py-3 rounded-xl w-full transition cursor-not-allowed"
+                                disabled
+                            >
+                                Produto Indisponível
+                            </button>
+                        )}
                     </motion.div>
                 </motion.div>
             </AnimatePresence>
