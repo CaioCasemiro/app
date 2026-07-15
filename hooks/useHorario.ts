@@ -18,9 +18,9 @@ export function useHorario() {
         const horarios: Record<Dia, Horario> = {
             segunda: { aberto: false, inicio: 10, fim: 18 },
             terca: { aberto: true, inicio: 10, fim: 18 },
-            quarta: { aberto: true, inicio: 10, fim: 18 },
-            quinta: { aberto: true, inicio: 10, fim: 18 },
-            sexta: { aberto: true, inicio: 10, fim: 18 },
+            quarta: { aberto: true, inicio: 10, fim: 20 },
+            quinta: { aberto: true, inicio: 10, fim: 20 },
+            sexta: { aberto: true, inicio: 10, fim: 20 },
             sabado: { aberto: true, inicio: 10, fim: 18 },
             domingo: { aberto: true, inicio: 10, fim: 18 },
         };
