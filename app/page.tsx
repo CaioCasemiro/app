@@ -31,28 +31,30 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-6 md:mr-">
 
-            <Link
-              href="/acompanhar"
-              className="flex items-center gap-1 text-sm font-semibold text-[#3e2723] hover:underline hover:opacity-80 transition whitespace-nowrap"
-            >
-              📦 Meu pedido
-            </Link>
-
             <div className='flex items-center  gap-6 mr-1'>
-              <a
-                href="https://www.instagram.com/_adocicadadoceria"
-                target="_blank"
-                className="flex  gap-2 hover:underline hover:opacity-80 transition"
+              <Link
+                href="/acompanhar"
+                className="flex items-center gap-1 hover:opacity-80 transition"
+                aria-label="Acompanhar meu pedido"
               >
-                <img src="/instagram.png" alt="Instagram logo" className="w-12 h-12 hidden md:inline" />
-              </a>
+                <span className="text-3xl leading-none" role="img" aria-hidden="true">📦</span>
+                <span className="hidden md:inline text-sm font-semibold text-[#3e2723] whitespace-nowrap">Meu pedido</span>
+              </Link>
+
               <a
-                href="https://api.whatsapp.com/send/?phone=%2B5589994282685&text&type=phone_number&app_absent=0"
-                target="_blank"
-                className="flex gap-2 hover:underline hover:opacity-80 transition"
-              >
-                <img src="/whatsapp.png" alt="WhatsApp logo" className="w-12 h-12" />
-              </a>
+                  href="https://www.instagram.com/_adocicadadoceria"
+                  target="_blank"
+                  className="flex  gap-2 hover:underline hover:opacity-80 transition"
+                >
+                  <img src="/instagram.png" alt="Instagram logo" className="w-12 h-12 hidden md:inline" />
+                </a>
+              <a
+                  href="https://api.whatsapp.com/send/?phone=%2B5589994282685&text&type=phone_number&app_absent=0"
+                  target="_blank"
+                  className="flex gap-2 hover:underline hover:opacity-80 transition"
+                >
+                  <img src="/whatsapp.png" alt="WhatsApp logo" className="w-12 h-12" />
+                </a>
             </div>
 
             <a onClick={abrirSacola} className='cursor-pointer lg:hidden'>
