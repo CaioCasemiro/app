@@ -31,7 +31,7 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-6 md:mr-">
 
-            <div className='flex items-center  gap-6 mr-1'>
+            <div className='flex items-center  gap-3 mr-1'>
               <Link
                 href="/acompanhar"
                 className="flex items-center gap-1 hover:opacity-80 transition"
