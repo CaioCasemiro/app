@@ -44,7 +44,7 @@ export default function Pedidos() {
         buscarPedidos();
     }, [router]);
 
-    const finalizarPedido = async (id: number) => {
+    const atualizarStatus = async (id: number, status: string) => {
         const token = localStorage.getItem("token");
         if (!token) {
             alert("Token não encontrado. Faça login novamente.");
@@ -52,12 +52,14 @@ export default function Pedidos() {
         }
 
         try {
-            const resposta = await fetch(`https://doceria-backend.onrender.com/pedidos/${id}/finalizar`, {
+            const resposta = await fetch(`https://doceria-backend.onrender.com/pedidos/${id}/status`, {
                 method: "PATCH",
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Accept": "application/json",
+                    "Content-Type": "application/json",
                 },
+                body: JSON.stringify({ status }),
             });
 
             const text = await resposta.text();
@@ -65,16 +67,16 @@ export default function Pedidos() {
             try { data = text ? JSON.parse(text) : null; } catch { data = { message: text }; }
 
             if (!resposta.ok) {
-                console.error("Erro ao finalizar pedido:", resposta.status, data || text);
+                console.error("Erro ao atualizar status:", resposta.status, data || text);
                 const msg = data?.erro || data?.message || text || `Status ${resposta.status}`;
-                alert(`Erro ao finalizar pedido: ${msg}`);
+                alert(`Erro ao atualizar status: ${msg}`);
                 return;
             }
 
-            setPedidos(prev => prev.map(p => p.id === id ? { ...p, finalizado: true } : p));
+            setPedidos(prev => prev.map(p => p.id === id ? { ...p, status, finalizado: status === "entregue" } : p));
         } catch (e: any) {
-            console.error("Erro de rede ao finalizar pedido:", e);
-            alert("Não foi possível finalizar o pedido. Veja o console para mais detalhes.");
+            console.error("Erro de rede ao atualizar status:", e);
+            alert("Não foi possível atualizar o status. Veja o console para mais detalhes.");
         }
     };
 
@@ -125,12 +127,16 @@ export default function Pedidos() {
             <p className="text-sm text-gray-400 mt-3">Feito em: {new Date(pedido.criadoEm).toLocaleString()}</p>
 
             {!pedido.finalizado && (
-                <button
-                    onClick={() => finalizarPedido(pedido.id)}
-                    className="mt-3 bg-blue-600 text-white px-4 py-2 rounded hover:cursor-pointer hover:bg-blue-700 transition"
+                <select
+                    value={pedido.status || "recebido"}
+                    onChange={(e) => atualizarStatus(pedido.id, e.target.value)}
+                    className="mt-3 border border-gray-300 rounded px-3 py-2 hover:cursor-pointer bg-white"
                 >
-                    Marcar como Finalizado
-                </button>
+                    <option value="recebido">Recebido</option>
+                    <option value="em_preparo">Em preparo</option>
+                    <option value="pronto">Pronto</option>
+                    <option value="entregue">Entregue</option>
+                </select>
             )}
         </div>
     ));
@@ -163,4 +169,4 @@ export default function Pedidos() {
             </div>
         </div>
     );
-}
+} 
