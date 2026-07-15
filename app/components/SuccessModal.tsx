@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 interface SuccessModalProps {
     message?: string;
@@ -31,7 +32,15 @@ export default function SuccessModal({ message = "Sucesso!", duration = 2500, on
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{message}</h3>
                 <p className="text-sm text-gray-500 mb-4">Recebemos seu pedido e já estamos processando.</p>
-                <button onClick={onClose} className="mt-2 bg-[#d4a574] hover:bg-[#c28e57] text-white px-4 py-2 rounded-lg">Fechar</button>
+                <div className="flex flex-col sm:flex-row gap-2 justify-center mt-2">
+                    <Link
+                        href="/acompanhar"
+                        className="bg-[#d4a574] hover:bg-[#c28e57] text-white px-4 py-2 rounded-lg"
+                    >
+                        Acompanhar pedido
+                    </Link>
+                    <button onClick={onClose} className="border border-gray-300 hover:bg-gray-100 text-gray-700 px-4 py-2 rounded-lg">Fechar</button>
+                </div>
             </motion.div>
         </div>
     );
